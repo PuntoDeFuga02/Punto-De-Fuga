@@ -532,14 +532,17 @@
     // A diferencia de "Ahora mismo" y la Bitácora, esta lista no se edita desde
     // el sitio — cada tarjeta la agrego yo a mano cuando me pasas un enlace,
     // para asegurarme de que el título, la fuente y la imagen sean reales.
+    // Nota sobre imágenes: las miniaturas de TikTok no se pueden mostrar
+    // fuera de tiktok.com (su CDN las bloquea), así que esas tarjetas quedan
+    // solo con texto. Las noticias de sitios normales sí suelen permitir
+    // usar su imagen de portada como vista previa.
     const enlaces = [
       {
         tipo: "TikTok",
         fuente: "@tuabogadopreferido",
         titulo: "Por qué NotebookLM es una gran herramienta para aprender",
         descripcion: "Video de @tuabogadopreferido en TikTok — el enlace lleva al video completo, ahí en TikTok.",
-        url: "https://www.tiktok.com/@tuabogadopreferido/video/7637976894410984712",
-        imagen: "https://p16-common-sign.tiktokcdn.com/tos-alisg-p-0037/oUXSeW1nfAPpG1lgQ14xfGFFwSf8AOUXRuRABM~tplv-tiktokx-dmt-logom:tos-alisg-i-0068/owAAD5IgQGAnPFfeSFLwfjPCIwcqfRA9GJxGAV.image?dr=14573&x-expires=1788494400&x-signature=KRIp9LFSVDJVeC2yqWYBErpTmJY%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=my2"
+        url: "https://www.tiktok.com/@tuabogadopreferido/video/7637976894410984712"
       }
       // Para agregar otra: pásame el enlace y yo armo el objeto con los datos reales.
     ];
