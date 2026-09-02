@@ -351,6 +351,56 @@
     .entry-form-row { grid-template-columns: 1fr; }
   }
 
+  .red-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .red-card {
+    display: block;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--rule);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .red-card:hover { transform: translateY(-4px); border-color: var(--amber); }
+  .red-card:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  .red-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    background: var(--rule);
+  }
+
+  .red-body { padding: 1rem 1.15rem 1.3rem; }
+
+  .red-meta {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    margin-bottom: 0.45rem;
+    font-weight: 600;
+  }
+
+  .red-card h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    margin: 0 0 0.4rem;
+    color: var(--ink);
+  }
+
+  .red-card p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
+
+  .red-vacio { color: var(--ink-soft); font-size: 0.98rem; }
+
   .about p { max-width: 60ch; color: var(--ink-soft); font-size: 1.05rem; }
 
   footer {
@@ -380,6 +430,7 @@
     <nav>
       <a href="#ahora">Ahora</a>
       <a href="#bitacora">Bitácora</a>
+      <a href="#en-la-red">En la red</a>
       <a href="#sobre">Sobre esto</a>
     </nav>
   </header>
@@ -426,6 +477,14 @@
       <div id="bitacora-lista"></div>
     </section>
 
+    <section id="en-la-red">
+      <div class="section-head">
+        <h2>En la red</h2>
+        <span>noticias y videos que valen la pena, con enlace a la fuente original</span>
+      </div>
+      <div class="red-grid" id="red-lista"></div>
+    </section>
+
     <section id="sobre" class="about">
       <div class="section-head">
         <h2>Sobre esto</h2>
@@ -456,6 +515,15 @@
       { fecha: "28 ago 2026", categoria: "fisica", etiqueta: "Física", titulo: "Entropía y por qué las cosas se desordenan solas", texto: "Apuntes de un video que por fin me hizo entender la segunda ley de la termodinámica sin fórmulas." },
       { fecha: "25 ago 2026", categoria: "derecho", etiqueta: "Derecho", titulo: "Lo que un contrato antiguo me enseñó sobre confianza", texto: "Una reflexión de clase que se quedó pensando más allá del examen." },
       { fecha: "20 ago 2026", categoria: "vida", etiqueta: "Vida", titulo: "Aprender algo nuevo a los veintitantos, sin miedo a empezar de cero", texto: "Por qué este sitio existe, en el fondo." }
+    ];
+
+    // "En la red": noticias y videos (incluye TikToks) que tú me pidas agregar.
+    // A diferencia de "Ahora mismo" y la Bitácora, esta lista no se edita desde
+    // el sitio — cada tarjeta la agrego yo a mano cuando me pasas un enlace,
+    // para asegurarme de que el título, la fuente y la imagen sean reales.
+    const enlaces = [
+      // Ejemplo de formato (bórralo o pídeme que lo reemplace por uno real):
+      // { tipo: "Noticia", fuente: "elpais.com", titulo: "Título de la noticia", descripcion: "Una línea de contexto.", url: "https://...", imagen: "https://..." }
     ];
 
     document.title = perfil.nombre + " — Bitácora";
@@ -631,6 +699,59 @@
       }
     }
 
+    // Dibuja las tarjetas de "En la red". Si no hay ninguna todavía, muestra
+    // un mensaje explicando cómo agregar la primera.
+    function renderRed() {
+      const cont = document.getElementById('red-lista');
+      cont.innerHTML = '';
+
+      if (enlaces.length === 0) {
+        const vacio = document.createElement('p');
+        vacio.className = 'red-vacio';
+        vacio.textContent = 'Todavía no hay nada aquí. Cuando quieras compartir una noticia o un TikTok, pásame el enlace y lo agrego.';
+        cont.appendChild(vacio);
+        return;
+      }
+
+      enlaces.forEach((item) => {
+        const card = document.createElement('a');
+        card.className = 'red-card';
+        card.href = item.url;
+        card.target = '_blank';
+        card.rel = 'noopener noreferrer';
+
+        if (item.imagen) {
+          const img = document.createElement('img');
+          img.className = 'red-thumb';
+          img.src = item.imagen;
+          img.alt = item.titulo;
+          img.loading = 'lazy';
+          card.appendChild(img);
+        }
+
+        const body = document.createElement('div');
+        body.className = 'red-body';
+
+        const meta = document.createElement('div');
+        meta.className = 'red-meta';
+        meta.textContent = `${item.tipo} · ${item.fuente}`;
+
+        const h3 = document.createElement('h3');
+        h3.textContent = item.titulo;
+
+        body.append(meta, h3);
+
+        if (item.descripcion) {
+          const p = document.createElement('p');
+          p.textContent = item.descripcion;
+          body.appendChild(p);
+        }
+
+        card.appendChild(body);
+        cont.appendChild(card);
+      });
+    }
+
     // Barra de progreso de lectura: refleja cuánto has bajado en la página.
     function actualizarProgreso() {
       const el = document.documentElement;
@@ -645,6 +766,7 @@
     renderAhora();
     renderFiltros();
     renderBitacora();
+    renderRed();
     actualizarProgreso();
 
     document.getElementById('nueva-entrada').addEventListener('submit', (e) => {
