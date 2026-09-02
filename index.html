@@ -153,7 +153,7 @@
 
   .section-head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 1rem;
     border-bottom: 1px solid var(--rule);
@@ -351,11 +351,67 @@
     .entry-form-row { grid-template-columns: 1fr; }
   }
 
+  .red-controles {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .red-flecha {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: none;
+    color: var(--ink);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .red-flecha:hover { border-color: var(--amber); color: var(--amber); }
+  .red-flecha:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  .red-ver-todos {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    padding: 0.3rem 0;
+    margin-left: 0.5rem;
+    border-bottom: 1px solid transparent;
+  }
+  .red-ver-todos:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .red-ver-todos:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
   .red-grid {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.75rem;
+    margin: 0 -0.15rem;
+    padding-left: 0.15rem;
+    padding-right: 0.15rem;
+  }
+  .red-grid::-webkit-scrollbar { height: 6px; }
+  .red-grid::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+
+  .red-grid .red-card {
+    flex: 0 0 clamp(220px, 70vw, 280px);
+    scroll-snap-align: start;
+  }
+
+  .red-grid.lista {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.5rem;
+    overflow: visible;
   }
+  .red-grid.lista .red-card { flex: unset; }
 
   .red-card {
     display: block;
@@ -490,7 +546,11 @@
     <section id="en-la-red">
       <div class="section-head">
         <h2>En la red</h2>
-        <span>noticias y videos que valen la pena, con enlace a la fuente original</span>
+        <div class="red-controles" id="red-controles">
+          <button type="button" id="red-prev" class="red-flecha" aria-label="Ver anteriores">‹</button>
+          <button type="button" id="red-next" class="red-flecha" aria-label="Ver siguientes">›</button>
+          <button type="button" id="red-toggle" class="red-ver-todos">Ver todos</button>
+        </div>
       </div>
       <div class="red-grid" id="red-lista"></div>
     </section>
@@ -720,19 +780,35 @@
       }
     }
 
+    // "En la red" empieza como carrusel horizontal (con flechas). Cuando hay
+    // varias tarjetas, el botón "Ver todos" cambia a una lista completa, sin
+    // recargar la página.
+    let redVistaCompleta = false;
+
     // Dibuja las tarjetas de "En la red". Si no hay ninguna todavía, muestra
     // un mensaje explicando cómo agregar la primera.
     function renderRed() {
       const cont = document.getElementById('red-lista');
+      const controles = document.getElementById('red-controles');
       cont.innerHTML = '';
 
       if (enlaces.length === 0) {
+        controles.style.display = 'none';
         const vacio = document.createElement('p');
         vacio.className = 'red-vacio';
         vacio.textContent = 'Todavía no hay nada aquí. Cuando quieras compartir una noticia o un TikTok, pásame el enlace y lo agrego.';
         cont.appendChild(vacio);
         return;
       }
+
+      controles.style.display = '';
+      // Con pocas tarjetas no hace falta ni carrusel ni "ver todos".
+      const necesitaControles = enlaces.length > 3;
+      document.getElementById('red-toggle').style.display = necesitaControles ? '' : 'none';
+      document.getElementById('red-prev').style.display = (necesitaControles && !redVistaCompleta) ? '' : 'none';
+      document.getElementById('red-next').style.display = (necesitaControles && !redVistaCompleta) ? '' : 'none';
+      cont.classList.toggle('lista', redVistaCompleta);
+      document.getElementById('red-toggle').textContent = redVistaCompleta ? 'Ver como carrusel' : 'Ver todos';
 
       enlaces.forEach((item) => {
         const card = document.createElement('a');
@@ -790,6 +866,17 @@
     }
     window.addEventListener('scroll', actualizarProgreso, { passive: true });
     window.addEventListener('resize', actualizarProgreso);
+
+    document.getElementById('red-toggle').addEventListener('click', () => {
+      redVistaCompleta = !redVistaCompleta;
+      renderRed();
+    });
+    document.getElementById('red-prev').addEventListener('click', () => {
+      document.getElementById('red-lista').scrollBy({ left: -300, behavior: 'smooth' });
+    });
+    document.getElementById('red-next').addEventListener('click', () => {
+      document.getElementById('red-lista').scrollBy({ left: 300, behavior: 'smooth' });
+    });
 
     cargarGuardado();
     renderAhora();
