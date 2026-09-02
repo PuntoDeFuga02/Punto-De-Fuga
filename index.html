@@ -399,6 +399,16 @@
 
   .red-card p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
 
+  .red-ver-mas {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    color: var(--amber);
+  }
+
   .red-vacio { color: var(--ink-soft); font-size: 0.98rem; }
 
   .about p { max-width: 60ch; color: var(--ink-soft); font-size: 1.05rem; }
@@ -490,6 +500,7 @@
         <h2>Sobre esto</h2>
       </div>
       <p>Este sitio nació de la costumbre de anotar todo lo que se cruza: ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que voy leyendo y viendo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
+      <p>Todo lo que aparece en "En la red" es de otras personas: cada tarjeta enlaza directo a la fuente original (la noticia, el TikTok, el video), con crédito a quien lo hizo. La idea es señalar cosas que valen la pena, no reproducirlas ni presentarlas como propias.</p>
     </section>
 
     <footer>
@@ -522,8 +533,15 @@
     // el sitio — cada tarjeta la agrego yo a mano cuando me pasas un enlace,
     // para asegurarme de que el título, la fuente y la imagen sean reales.
     const enlaces = [
-      // Ejemplo de formato (bórralo o pídeme que lo reemplace por uno real):
-      // { tipo: "Noticia", fuente: "elpais.com", titulo: "Título de la noticia", descripcion: "Una línea de contexto.", url: "https://...", imagen: "https://..." }
+      {
+        tipo: "TikTok",
+        fuente: "@tuabogadopreferido",
+        titulo: "Por qué NotebookLM es una gran herramienta para aprender",
+        descripcion: "Video de @tuabogadopreferido en TikTok — el enlace lleva al video completo, ahí en TikTok.",
+        url: "https://www.tiktok.com/@tuabogadopreferido/video/7637976894410984712",
+        imagen: "https://p16-common-sign.tiktokcdn.com/tos-alisg-p-0037/oUXSeW1nfAPpG1lgQ14xfGFFwSf8AOUXRuRABM~tplv-tiktokx-dmt-logom:tos-alisg-i-0068/owAAD5IgQGAnPFfeSFLwfjPCIwcqfRA9GJxGAV.image?dr=14573&x-expires=1788494400&x-signature=KRIp9LFSVDJVeC2yqWYBErpTmJY%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=my2"
+      }
+      // Para agregar otra: pásame el enlace y yo armo el objeto con los datos reales.
     ];
 
     document.title = perfil.nombre + " — Bitácora";
@@ -726,6 +744,9 @@
           img.src = item.imagen;
           img.alt = item.titulo;
           img.loading = 'lazy';
+          // Algunas miniaturas (como las de TikTok) son enlaces temporales.
+          // Si ya caducó, quitamos la imagen en vez de mostrar un ícono roto.
+          img.addEventListener('error', () => img.remove());
           card.appendChild(img);
         }
 
@@ -746,6 +767,11 @@
           p.textContent = item.descripcion;
           body.appendChild(p);
         }
+
+        const verMas = document.createElement('span');
+        verMas.className = 'red-ver-mas';
+        verMas.textContent = `Ver en ${item.tipo} ↗`;
+        body.appendChild(verMas);
 
         card.appendChild(body);
         cont.appendChild(card);
