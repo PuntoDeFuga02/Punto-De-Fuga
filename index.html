@@ -6,17 +6,33 @@
 <title>Punto de Fuga — Bitácora</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --ink: #12151d;
-    --ink-soft: #1b2029;
-    --paper: #ede7d8;
-    --paper-dim: #b7ae9c;
-    --amber: #c99a52;
-    --rust: #a15c45;
-    --moss: #6f8f74;
-    --line: rgba(237, 231, 216, 0.14);
+    color-scheme: light dark;
+    --bg: #f6f1e6;
+    --bg-raised: #eee6d3;
+    --ink: #201c15;
+    --ink-soft: #6e6656;
+    --rule: rgba(32, 28, 21, 0.14);
+    --amber: #96692a;
+    --rust: #8a4a34;
+    --moss: #4f6f54;
+    --shadow: rgba(32, 28, 21, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14151a;
+      --bg-raised: #1b1d24;
+      --ink: #ede7d8;
+      --ink-soft: #a39d8c;
+      --rule: rgba(237, 231, 216, 0.14);
+      --amber: #d9a856;
+      --rust: #c0715a;
+      --moss: #8aab8f;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
   }
 
   * { box-sizing: border-box; }
@@ -24,54 +40,56 @@
 
   body {
     margin: 0;
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--bg);
+    color: var(--ink);
     font-family: 'Public Sans', sans-serif;
-    line-height: 1.6;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
   }
 
   a { color: var(--amber); text-decoration: none; border-bottom: 1px solid transparent; }
   a:hover { border-bottom-color: var(--amber); }
   a:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
 
-  .page {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    min-height: 100vh;
-  }
-
-  .spine {
-    background: var(--ink-soft);
-    border-right: 1px solid var(--line);
-    padding: 2.5rem 1.75rem;
+  .masthead {
     position: sticky;
     top: 0;
-    height: 100vh;
-  }
-
-  .spine-name {
-    font-family: 'Fraunces', serif;
-    font-size: 1.35rem;
-    font-weight: 500;
-  }
-
-  .spine-role {
-    color: var(--paper-dim);
-    font-size: 0.9rem;
-    margin-top: 0.35rem;
-  }
-
-  .spine nav {
-    margin-top: 3rem;
+    z-index: 10;
     display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem clamp(1.5rem, 6vw, 5rem);
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
   }
 
-  .spine nav a { color: var(--paper); font-size: 0.95rem; border: none; }
-  .spine nav a:hover { color: var(--amber); }
+  .masthead-name {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+  }
 
-  main { padding: 4rem clamp(1.5rem, 5vw, 5rem) 6rem; max-width: 900px; }
+  .masthead nav {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2.25rem);
+  }
+
+  .masthead nav a {
+    color: var(--ink-soft);
+    border: none;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .masthead nav a:hover { color: var(--amber); }
+
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 2rem) 7rem;
+  }
 
   .hero { animation: rise 0.7s ease-out both; }
 
@@ -84,86 +102,124 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  .kicker {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--amber);
+    margin-bottom: 1.25rem;
+  }
+
   .hero h1 {
     font-family: 'Fraunces', serif;
     font-style: italic;
     font-weight: 500;
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    line-height: 1.3;
-    max-width: 20ch;
-    margin: 0 0 1.25rem;
+    font-size: clamp(2.1rem, 6vw, 3.1rem);
+    line-height: 1.22;
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.01em;
   }
 
-  .hero p { max-width: 58ch; color: var(--paper-dim); font-size: 1.05rem; }
+  .hero p { color: var(--ink-soft); font-size: 1.1rem; max-width: 56ch; }
 
-  section { margin-top: 5rem; }
+  section { margin-top: 6rem; }
 
   .section-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 0.75rem;
-    margin-bottom: 2rem;
+    gap: 1rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.85rem;
+    margin-bottom: 2.5rem;
   }
 
   .section-head h2 {
     font-family: 'Fraunces', serif;
     font-weight: 500;
-    font-size: 1.3rem;
+    font-style: italic;
+    font-size: 1.5rem;
     margin: 0;
   }
 
-  .section-head span { color: var(--paper-dim); font-size: 0.85rem; }
+  .section-head span {
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+    text-align: right;
+  }
 
-  .now-list { display: grid; gap: 1.25rem; }
+  .now-list { display: grid; gap: 1.75rem; }
 
   .now-item {
     display: grid;
-    grid-template-columns: 90px 1fr;
-    gap: 1rem;
+    grid-template-columns: 100px 1fr;
+    gap: 1.25rem;
     align-items: baseline;
   }
 
-  .now-item .kind { color: var(--paper-dim); font-size: 0.85rem; }
-  .now-item p { margin: 0; max-width: 62ch; }
+  .now-item .kind {
+    color: var(--amber);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .now-item p { margin: 0; max-width: 58ch; font-size: 1.02rem; }
+
+  .now-item p[contenteditable="true"] {
+    cursor: text;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .now-item p[contenteditable="true"]:focus {
+    outline: none;
+    border-bottom-color: var(--amber);
+  }
 
   .entry {
-    border-left: 2px solid var(--line);
-    padding-left: 1.5rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 2rem;
     padding-bottom: 2.5rem;
   }
   .entry:last-child { padding-bottom: 0; }
 
   .entry-meta {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.85rem;
     align-items: center;
-    margin-bottom: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--paper-dim);
+    margin-bottom: 0.75rem;
+    font-size: 0.78rem;
   }
 
-  .tag { padding: 0.15rem 0.6rem; border-radius: 3px; font-size: 0.78rem; }
-  .tag.derecho { background: rgba(161, 92, 69, 0.18); color: var(--rust); }
-  .tag.ia { background: rgba(201, 154, 82, 0.18); color: var(--amber); }
-  .tag.fisica { background: rgba(111, 143, 116, 0.18); color: var(--moss); }
-  .tag.vida { background: rgba(183, 174, 156, 0.18); color: var(--paper-dim); }
+  .tag {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+  .tag.derecho { color: var(--rust); }
+  .tag.ia { color: var(--amber); }
+  .tag.fisica { color: var(--moss); }
+  .tag.vida { color: var(--ink-soft); }
+
+  .entry-meta .fecha { color: var(--ink-soft); }
 
   .entry h3 {
     font-family: 'Fraunces', serif;
     font-weight: 500;
-    font-size: 1.15rem;
-    margin: 0 0 0.5rem;
+    font-size: 1.4rem;
+    line-height: 1.35;
+    margin: 0 0 0.6rem;
   }
 
-  .entry p { margin: 0; max-width: 65ch; color: var(--paper-dim); }
+  .entry p { margin: 0; max-width: 60ch; color: var(--ink-soft); font-size: 1.02rem; }
 
   .entry-delete {
     margin-left: auto;
     background: none;
     border: none;
-    color: var(--paper-dim);
+    color: var(--ink-soft);
     font-size: 1.1rem;
     line-height: 1;
     padding: 0 0.25rem;
@@ -172,24 +228,15 @@
   .entry-delete:hover { color: var(--rust); }
   .entry-delete:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 
-  .now-item p[contenteditable="true"] {
-    cursor: text;
-    border-bottom: 1px dashed var(--line);
-  }
-  .now-item p[contenteditable="true"]:focus {
-    outline: none;
-    border-bottom-color: var(--amber);
-  }
-
   .entry-form {
-    background: var(--ink-soft);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 2.5rem;
+    background: var(--bg-raised);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 3rem;
     display: grid;
-    gap: 0.75rem;
-    max-width: 65ch;
+    gap: 0.85rem;
+    box-shadow: 0 8px 24px var(--shadow);
   }
 
   .entry-form-row { display: grid; grid-template-columns: 140px 1fr; gap: 0.75rem; }
@@ -197,13 +244,13 @@
   .entry-form select,
   .entry-form input,
   .entry-form textarea {
-    background: var(--ink);
-    border: 1px solid var(--line);
-    border-radius: 3px;
-    color: var(--paper);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    color: var(--ink);
     font-family: 'Public Sans', sans-serif;
     font-size: 0.95rem;
-    padding: 0.5rem 0.7rem;
+    padding: 0.55rem 0.75rem;
   }
 
   .entry-form select:focus-visible,
@@ -213,116 +260,105 @@
     outline-offset: 1px;
   }
 
-  .entry-form textarea { min-height: 80px; resize: vertical; font-family: inherit; }
+  .entry-form textarea { min-height: 90px; resize: vertical; font-family: inherit; }
 
   .entry-form button {
     justify-self: start;
     background: var(--amber);
     border: none;
-    border-radius: 3px;
-    color: var(--ink);
+    border-radius: 4px;
+    color: var(--bg);
     font-weight: 600;
     font-size: 0.9rem;
-    padding: 0.55rem 1.1rem;
+    padding: 0.6rem 1.2rem;
     cursor: pointer;
   }
-  .entry-form button:hover { opacity: 0.9; }
-  .entry-form button:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+  .entry-form button:hover { opacity: 0.88; }
+  .entry-form button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-  @media (max-width: 760px) {
+  @media (max-width: 640px) {
     .entry-form-row { grid-template-columns: 1fr; }
   }
 
-  .about p { max-width: 62ch; color: var(--paper-dim); }
+  .about p { max-width: 60ch; color: var(--ink-soft); font-size: 1.05rem; }
 
   footer {
-    margin-top: 6rem;
+    margin-top: 7rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--line);
-    color: var(--paper-dim);
-    font-size: 0.9rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-size: 0.88rem;
   }
 
-  footer a { color: var(--paper-dim); border-bottom: 1px solid var(--paper-dim); }
+  footer a { color: var(--ink-soft); border-bottom: 1px solid var(--ink-soft); }
 
-  @media (max-width: 760px) {
-    .page { grid-template-columns: 1fr; }
-    .spine {
-      position: relative;
-      height: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.5rem;
-    }
-    .spine nav { flex-direction: row; margin-top: 0; gap: 1.25rem; flex-wrap: wrap; }
-    main { padding: 3rem 1.5rem 4rem; }
-    .now-item { grid-template-columns: 1fr; gap: 0.25rem; }
+  @media (max-width: 640px) {
+    .masthead { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .masthead nav { gap: 1.25rem; }
+    .now-item { grid-template-columns: 1fr; gap: 0.3rem; }
   }
 </style>
 </head>
 <body>
-  <div class="page">
-    <aside class="spine">
-      <div class="spine-name">Punto de Fuga</div>
-      <div class="spine-role">Un cuaderno de ideas</div>
-      <nav>
-        <a href="#ahora">Ahora</a>
-        <a href="#bitacora">Bitácora</a>
-        <a href="#sobre">Sobre esto</a>
-      </nav>
-    </aside>
+  <header class="masthead">
+    <div class="masthead-name">Punto de Fuga</div>
+    <nav>
+      <a href="#ahora">Ahora</a>
+      <a href="#bitacora">Bitácora</a>
+      <a href="#sobre">Sobre esto</a>
+    </nav>
+  </header>
 
-    <main>
-      <section class="hero">
-        <h1>Un cuaderno donde el derecho conversa con la física, la IA y las preguntas que no dejan dormir.</h1>
-        <p>Este es un espacio en construcción: notas de lo que leo y veo, y un lugar para pensar en voz alta sobre inteligencia artificial, física y las ideas que ayudan a cambiar de perspectiva. Empieza sencillo; va a crecer con el tiempo.</p>
-      </section>
+  <main>
+    <section class="hero">
+      <span class="kicker">Un cuaderno personal</span>
+      <h1>Un cuaderno donde el derecho conversa con la física, la IA y las preguntas que no dejan dormir.</h1>
+      <p>Este es un espacio en construcción: notas de lo que leo y veo, y un lugar para pensar en voz alta sobre inteligencia artificial, física y las ideas que ayudan a cambiar de perspectiva. Empieza sencillo; va a crecer con el tiempo.</p>
+    </section>
 
-      <section id="ahora">
-        <div class="section-head">
-          <h2>Ahora mismo</h2>
-          <span>haz clic en cualquier línea para escribir la tuya</span>
+    <section id="ahora">
+      <div class="section-head">
+        <h2>Ahora mismo</h2>
+        <span>haz clic en cualquier línea para escribir la tuya</span>
+      </div>
+      <div class="now-list" id="ahora-lista"></div>
+    </section>
+
+    <section id="bitacora">
+      <div class="section-head">
+        <h2>Bitácora</h2>
+        <span>agrega una entrada abajo, o borra los ejemplos con la ×</span>
+      </div>
+
+      <form id="nueva-entrada" class="entry-form">
+        <div class="entry-form-row">
+          <select id="campo-categoria">
+            <option value="derecho">Derecho</option>
+            <option value="ia">IA</option>
+            <option value="fisica">Física</option>
+            <option value="vida">Vida</option>
+          </select>
+          <input type="text" id="campo-titulo" placeholder="Título de la entrada" required />
         </div>
-        <div class="now-list" id="ahora-lista"></div>
-      </section>
+        <textarea id="campo-texto" placeholder="Escribe aquí lo que quieras dejar anotado..." required></textarea>
+        <button type="submit">Agregar entrada</button>
+      </form>
 
-      <section id="bitacora">
-        <div class="section-head">
-          <h2>Bitácora</h2>
-          <span>agrega una entrada abajo, o borra los ejemplos con la ×</span>
-        </div>
+      <div id="bitacora-lista"></div>
+    </section>
 
-        <form id="nueva-entrada" class="entry-form">
-          <div class="entry-form-row">
-            <select id="campo-categoria">
-              <option value="derecho">Derecho</option>
-              <option value="ia">IA</option>
-              <option value="fisica">Física</option>
-              <option value="vida">Vida</option>
-            </select>
-            <input type="text" id="campo-titulo" placeholder="Título de la entrada" required />
-          </div>
-          <textarea id="campo-texto" placeholder="Escribe aquí lo que quieras dejar anotado..." required></textarea>
-          <button type="submit">Agregar entrada</button>
-        </form>
+    <section id="sobre" class="about">
+      <div class="section-head">
+        <h2>Sobre esto</h2>
+      </div>
+      <p>Este sitio nació de la costumbre de anotar todo lo que se cruza: ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que voy leyendo y viendo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
+    </section>
 
-        <div id="bitacora-lista"></div>
-      </section>
-
-      <section id="sobre" class="about">
-        <div class="section-head">
-          <h2>Sobre esto</h2>
-        </div>
-        <p>Este sitio nació de la costumbre de anotar todo lo que se cruza: ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que voy leyendo y viendo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
-      </section>
-
-      <footer>
-        <p>Sitio construido aprendiendo a programar, una tarde a la vez.</p>
-        <p><a href="#">[tu correo o red social]</a></p>
-      </footer>
-    </main>
-  </div>
+    <footer>
+      <p>Sitio construido aprendiendo a programar, una tarde a la vez.</p>
+      <p><a href="#">[tu correo o red social]</a></p>
+    </footer>
+  </main>
 
   <script>
     // Aquí vive todo el contenido que cambia. Para agregar o editar algo,
@@ -344,7 +380,7 @@
     ];
 
     document.title = perfil.nombre + " — Bitácora";
-    document.querySelector('.spine-name').textContent = perfil.nombre;
+    document.querySelector('.masthead-name').textContent = perfil.nombre;
 
     const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
     function formatearFecha(fecha) {
@@ -445,6 +481,7 @@
         tag.textContent = item.etiqueta;
 
         const fecha = document.createElement('span');
+        fecha.className = 'fecha';
         fecha.textContent = item.fecha;
 
         const borrar = document.createElement('button');
