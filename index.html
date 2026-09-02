@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Punto de Fuga — Bitácora</title>
+<meta name="description" content="Un cuaderno personal donde el derecho conversa con la física, la inteligencia artificial y las preguntas de todos los días." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2314151a'/%3E%3Cg stroke='%23d9a856' stroke-width='4' fill='none'%3E%3Cline x1='50' y1='50' x2='4' y2='12'/%3E%3Cline x1='50' y1='50' x2='96' y2='12'/%3E%3Cline x1='50' y1='50' x2='4' y2='88'/%3E%3Cline x1='50' y1='50' x2='96' y2='88'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='5' fill='%23d9a856'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -51,6 +53,17 @@
   a:hover { border-bottom-color: var(--amber); }
   a:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
 
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--amber);
+    z-index: 20;
+    transition: width 0.12s ease-out;
+  }
+
   .masthead {
     position: sticky;
     top: 0;
@@ -58,10 +71,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.1rem clamp(1.5rem, 6vw, 5rem);
+    gap: 1rem;
+    padding: 1rem clamp(1.5rem, 6vw, 5rem);
     background: var(--bg);
+    border-top: 2px solid var(--ink);
     border-bottom: 1px solid var(--rule);
   }
+
+  .masthead-id { display: flex; flex-direction: column; gap: 0.2rem; }
 
   .masthead-name {
     font-family: 'Fraunces', serif;
@@ -69,6 +86,13 @@
     font-weight: 500;
     font-size: 1.15rem;
     letter-spacing: 0.01em;
+  }
+
+  .masthead-tagline {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
   }
 
   .masthead nav {
@@ -82,6 +106,7 @@
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    transition: color 0.2s ease;
   }
   .masthead nav a:hover { color: var(--amber); }
 
@@ -150,13 +175,25 @@
     text-align: right;
   }
 
-  .now-list { display: grid; gap: 1.75rem; }
+  .now-card {
+    background: var(--bg-raised);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.75rem 1.85rem;
+    box-shadow: 0 8px 24px var(--shadow);
+  }
+
+  .now-list { display: grid; gap: 1.5rem; }
 
   .now-item {
     display: grid;
     grid-template-columns: 100px 1fr;
     gap: 1.25rem;
     align-items: baseline;
+  }
+  .now-item:not(:last-child) {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule);
   }
 
   .now-item .kind {
@@ -177,12 +214,40 @@
     border-bottom-color: var(--amber);
   }
 
+  .filtro-categorias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .filtro-chip {
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.35rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .filtro-chip:hover { border-color: var(--amber); color: var(--amber); }
+  .filtro-chip.activo { background: var(--amber); border-color: var(--amber); color: var(--bg); font-weight: 600; }
+  .filtro-chip:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
   .entry {
     border-top: 1px solid var(--rule);
-    padding-top: 2rem;
-    padding-bottom: 2.5rem;
+    padding: 2rem 0 2.5rem 1rem;
+    margin-left: -1rem;
+    border-left: 2px solid transparent;
+    transition: border-left-color 0.25s ease, background 0.25s ease;
   }
-  .entry:last-child { padding-bottom: 0; }
+  .entry:last-child { padding-bottom: 0.5rem; }
+  .entry:hover { border-left-color: var(--amber); }
+  .entry:hover h3 { color: var(--amber); }
 
   .entry-meta {
     display: flex;
@@ -190,6 +255,11 @@
     align-items: center;
     margin-bottom: 0.75rem;
     font-size: 0.78rem;
+  }
+
+  .entry-num {
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
   }
 
   .tag {
@@ -211,6 +281,7 @@
     font-size: 1.4rem;
     line-height: 1.35;
     margin: 0 0 0.6rem;
+    transition: color 0.25s ease;
   }
 
   .entry p { margin: 0; max-width: 60ch; color: var(--ink-soft); font-size: 1.02rem; }
@@ -300,8 +371,12 @@
 </style>
 </head>
 <body>
+  <div class="progress-bar" id="progress-bar"></div>
   <header class="masthead">
-    <div class="masthead-name">Punto de Fuga</div>
+    <div class="masthead-id">
+      <div class="masthead-name">Punto de Fuga</div>
+      <div class="masthead-tagline">Derecho · IA · Física · Vida</div>
+    </div>
     <nav>
       <a href="#ahora">Ahora</a>
       <a href="#bitacora">Bitácora</a>
@@ -321,7 +396,9 @@
         <h2>Ahora mismo</h2>
         <span>haz clic en cualquier línea para escribir la tuya</span>
       </div>
-      <div class="now-list" id="ahora-lista"></div>
+      <div class="now-card">
+        <div class="now-list" id="ahora-lista"></div>
+      </div>
     </section>
 
     <section id="bitacora">
@@ -329,6 +406,8 @@
         <h2>Bitácora</h2>
         <span>agrega una entrada abajo, o borra los ejemplos con la ×</span>
       </div>
+
+      <div class="filtro-categorias" id="filtro-categorias"></div>
 
       <form id="nueva-entrada" class="entry-form">
         <div class="entry-form-row">
@@ -464,17 +543,54 @@
       });
     }
 
+    // Filtro por categoría: "todas" o una de las cuatro categorías.
+    // No borra nada, solo cambia qué se muestra.
+    let filtroActivo = 'todas';
+    const categoriasFiltro = [
+      { valor: 'todas', etiqueta: 'Todas' },
+      { valor: 'derecho', etiqueta: 'Derecho' },
+      { valor: 'ia', etiqueta: 'IA' },
+      { valor: 'fisica', etiqueta: 'Física' },
+      { valor: 'vida', etiqueta: 'Vida' }
+    ];
+
+    function renderFiltros() {
+      const cont = document.getElementById('filtro-categorias');
+      cont.innerHTML = '';
+      categoriasFiltro.forEach((cat) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'filtro-chip' + (filtroActivo === cat.valor ? ' activo' : '');
+        btn.textContent = cat.etiqueta;
+        btn.addEventListener('click', () => {
+          filtroActivo = cat.valor;
+          renderFiltros();
+          renderBitacora();
+        });
+        cont.appendChild(btn);
+      });
+    }
+
     // Bitácora: se puede agregar una entrada desde el formulario, o borrar
     // cualquiera con la ×. Ambos cambios se guardan en este navegador.
     function renderBitacora() {
       const cont = document.getElementById('bitacora-lista');
       cont.innerHTML = '';
-      entradas.forEach((item, i) => {
+      const visibles = filtroActivo === 'todas'
+        ? entradas
+        : entradas.filter((item) => item.categoria === filtroActivo);
+
+      visibles.forEach((item) => {
+        const i = entradas.indexOf(item);
         const entry = document.createElement('div');
         entry.className = 'entry';
 
         const meta = document.createElement('div');
         meta.className = 'entry-meta';
+
+        const num = document.createElement('span');
+        num.className = 'entry-num';
+        num.textContent = 'N.º ' + String(i + 1).padStart(2, '0');
 
         const tag = document.createElement('span');
         tag.className = `tag ${item.categoria}`;
@@ -495,7 +611,7 @@
           renderBitacora();
         });
 
-        meta.append(tag, fecha, borrar);
+        meta.append(num, tag, fecha, borrar);
 
         const h3 = document.createElement('h3');
         h3.textContent = item.titulo;
@@ -506,11 +622,30 @@
         entry.append(meta, h3, p);
         cont.appendChild(entry);
       });
+
+      if (visibles.length === 0) {
+        const vacio = document.createElement('p');
+        vacio.style.color = 'var(--ink-soft)';
+        vacio.textContent = 'Todavía no hay entradas en esta categoría.';
+        cont.appendChild(vacio);
+      }
     }
+
+    // Barra de progreso de lectura: refleja cuánto has bajado en la página.
+    function actualizarProgreso() {
+      const el = document.documentElement;
+      const total = el.scrollHeight - el.clientHeight;
+      const porcentaje = total > 0 ? (el.scrollTop / total) * 100 : 0;
+      document.getElementById('progress-bar').style.width = porcentaje + '%';
+    }
+    window.addEventListener('scroll', actualizarProgreso, { passive: true });
+    window.addEventListener('resize', actualizarProgreso);
 
     cargarGuardado();
     renderAhora();
+    renderFiltros();
     renderBitacora();
+    actualizarProgreso();
 
     document.getElementById('nueva-entrada').addEventListener('submit', (e) => {
       e.preventDefault();
