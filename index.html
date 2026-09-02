@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Punto de Fuga — Bitácora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #12151d;
+    --ink-soft: #1b2029;
+    --paper: #ede7d8;
+    --paper-dim: #b7ae9c;
+    --amber: #c99a52;
+    --rust: #a15c45;
+    --moss: #6f8f74;
+    --line: rgba(237, 231, 216, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Public Sans', sans-serif;
+    line-height: 1.6;
+  }
+
+  a { color: var(--amber); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--amber); }
+  a:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+
+  .page {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+  }
+
+  .spine {
+    background: var(--ink-soft);
+    border-right: 1px solid var(--line);
+    padding: 2.5rem 1.75rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .spine-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+  }
+
+  .spine-role {
+    color: var(--paper-dim);
+    font-size: 0.9rem;
+    margin-top: 0.35rem;
+  }
+
+  .spine nav {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .spine nav a { color: var(--paper); font-size: 0.95rem; border: none; }
+  .spine nav a:hover { color: var(--amber); }
+
+  main { padding: 4rem clamp(1.5rem, 5vw, 5rem) 6rem; max-width: 900px; }
+
+  .hero { animation: rise 0.7s ease-out both; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero { animation: none; }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.3;
+    max-width: 20ch;
+    margin: 0 0 1.25rem;
+  }
+
+  .hero p { max-width: 58ch; color: var(--paper-dim); font-size: 1.05rem; }
+
+  section { margin-top: 5rem; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin: 0;
+  }
+
+  .section-head span { color: var(--paper-dim); font-size: 0.85rem; }
+
+  .now-list { display: grid; gap: 1.25rem; }
+
+  .now-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .now-item .kind { color: var(--paper-dim); font-size: 0.85rem; }
+  .now-item p { margin: 0; max-width: 62ch; }
+
+  .entry {
+    border-left: 2px solid var(--line);
+    padding-left: 1.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .entry:last-child { padding-bottom: 0; }
+
+  .entry-meta {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--paper-dim);
+  }
+
+  .tag { padding: 0.15rem 0.6rem; border-radius: 3px; font-size: 0.78rem; }
+  .tag.derecho { background: rgba(161, 92, 69, 0.18); color: var(--rust); }
+  .tag.ia { background: rgba(201, 154, 82, 0.18); color: var(--amber); }
+  .tag.fisica { background: rgba(111, 143, 116, 0.18); color: var(--moss); }
+  .tag.vida { background: rgba(183, 174, 156, 0.18); color: var(--paper-dim); }
+
+  .entry h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.15rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .entry p { margin: 0; max-width: 65ch; color: var(--paper-dim); }
+
+  .entry-delete {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--paper-dim);
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 0 0.25rem;
+    cursor: pointer;
+  }
+  .entry-delete:hover { color: var(--rust); }
+  .entry-delete:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  .now-item p[contenteditable="true"] {
+    cursor: text;
+    border-bottom: 1px dashed var(--line);
+  }
+  .now-item p[contenteditable="true"]:focus {
+    outline: none;
+    border-bottom-color: var(--amber);
+  }
+
+  .entry-form {
+    background: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    display: grid;
+    gap: 0.75rem;
+    max-width: 65ch;
+  }
+
+  .entry-form-row { display: grid; grid-template-columns: 140px 1fr; gap: 0.75rem; }
+
+  .entry-form select,
+  .entry-form input,
+  .entry-form textarea {
+    background: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--paper);
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .entry-form select:focus-visible,
+  .entry-form input:focus-visible,
+  .entry-form textarea:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 1px;
+  }
+
+  .entry-form textarea { min-height: 80px; resize: vertical; font-family: inherit; }
+
+  .entry-form button {
+    justify-self: start;
+    background: var(--amber);
+    border: none;
+    border-radius: 3px;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.55rem 1.1rem;
+    cursor: pointer;
+  }
+  .entry-form button:hover { opacity: 0.9; }
+  .entry-form button:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+  @media (max-width: 760px) {
+    .entry-form-row { grid-template-columns: 1fr; }
+  }
+
+  .about p { max-width: 62ch; color: var(--paper-dim); }
+
+  footer {
+    margin-top: 6rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+    color: var(--paper-dim);
+    font-size: 0.9rem;
+  }
+
+  footer a { color: var(--paper-dim); border-bottom: 1px solid var(--paper-dim); }
+
+  @media (max-width: 760px) {
+    .page { grid-template-columns: 1fr; }
+    .spine {
+      position: relative;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem;
+    }
+    .spine nav { flex-direction: row; margin-top: 0; gap: 1.25rem; flex-wrap: wrap; }
+    main { padding: 3rem 1.5rem 4rem; }
+    .now-item { grid-template-columns: 1fr; gap: 0.25rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <aside class="spine">
+      <div class="spine-name">Punto de Fuga</div>
+      <div class="spine-role">Un cuaderno de ideas</div>
+      <nav>
+        <a href="#ahora">Ahora</a>
+        <a href="#bitacora">Bitácora</a>
+        <a href="#sobre">Sobre esto</a>
+      </nav>
+    </aside>
+
+    <main>
+      <section class="hero">
+        <h1>Un cuaderno donde el derecho conversa con la física, la IA y las preguntas que no dejan dormir.</h1>
+        <p>Este es un espacio en construcción: notas de lo que leo y veo, y un lugar para pensar en voz alta sobre inteligencia artificial, física y las ideas que ayudan a cambiar de perspectiva. Empieza sencillo; va a crecer con el tiempo.</p>
+      </section>
+
+      <section id="ahora">
+        <div class="section-head">
+          <h2>Ahora mismo</h2>
+          <span>haz clic en cualquier línea para escribir la tuya</span>
+        </div>
+        <div class="now-list" id="ahora-lista"></div>
+      </section>
+
+      <section id="bitacora">
+        <div class="section-head">
+          <h2>Bitácora</h2>
+          <span>agrega una entrada abajo, o borra los ejemplos con la ×</span>
+        </div>
+
+        <form id="nueva-entrada" class="entry-form">
+          <div class="entry-form-row">
+            <select id="campo-categoria">
+              <option value="derecho">Derecho</option>
+              <option value="ia">IA</option>
+              <option value="fisica">Física</option>
+              <option value="vida">Vida</option>
+            </select>
+            <input type="text" id="campo-titulo" placeholder="Título de la entrada" required />
+          </div>
+          <textarea id="campo-texto" placeholder="Escribe aquí lo que quieras dejar anotado..." required></textarea>
+          <button type="submit">Agregar entrada</button>
+        </form>
+
+        <div id="bitacora-lista"></div>
+      </section>
+
+      <section id="sobre" class="about">
+        <div class="section-head">
+          <h2>Sobre esto</h2>
+        </div>
+        <p>Este sitio nació de la costumbre de anotar todo lo que se cruza: ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que voy leyendo y viendo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
+      </section>
+
+      <footer>
+        <p>Sitio construido aprendiendo a programar, una tarde a la vez.</p>
+        <p><a href="#">[tu correo o red social]</a></p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Aquí vive todo el contenido que cambia. Para agregar o editar algo,
+    // solo tocas esta parte — el HTML de arriba no necesita cambios.
+    const perfil = {
+      nombre: "Punto de Fuga", // este campo ahora es el nombre del sitio, no un dato personal
+      ahoraMismo: [
+        { tipo: "Leyendo", texto: "[Título del libro o artículo que estás leyendo ahora]" },
+        { tipo: "Viendo", texto: "[Un video, curso o documental que te tiene pensando]" },
+        { tipo: "Pensando", texto: "[Una pregunta abierta que traes rondando esta semana]" }
+      ]
+    };
+
+    const entradas = [
+      { fecha: "01 sep 2026", categoria: "ia", etiqueta: "IA", titulo: "¿Puede un modelo argumentar como abogado sin entender la ley?", texto: "Una nota corta sobre lo que separa generar un argumento jurídico plausible de realmente razonar sobre un caso." },
+      { fecha: "28 ago 2026", categoria: "fisica", etiqueta: "Física", titulo: "Entropía y por qué las cosas se desordenan solas", texto: "Apuntes de un video que por fin me hizo entender la segunda ley de la termodinámica sin fórmulas." },
+      { fecha: "25 ago 2026", categoria: "derecho", etiqueta: "Derecho", titulo: "Lo que un contrato antiguo me enseñó sobre confianza", texto: "Una reflexión de clase que se quedó pensando más allá del examen." },
+      { fecha: "20 ago 2026", categoria: "vida", etiqueta: "Vida", titulo: "Aprender algo nuevo a los veintitantos, sin miedo a empezar de cero", texto: "Por qué este sitio existe, en el fondo." }
+    ];
+
+    document.title = perfil.nombre + " — Bitácora";
+    document.querySelector('.spine-name').textContent = perfil.nombre;
+
+    const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+    function formatearFecha(fecha) {
+      const dia = String(fecha.getDate()).padStart(2, "0");
+      return `${dia} ${meses[fecha.getMonth()]} ${fecha.getFullYear()}`;
+    }
+
+    const etiquetas = { derecho: "Derecho", ia: "IA", fisica: "Física", vida: "Vida" };
+
+    // Guardado en este navegador (localStorage): así lo que escribas
+    // sigue ahí la próxima vez que abras el archivo en el mismo navegador
+    // y la misma computadora. Si el navegador lo bloquea (modo privado,
+    // configuración estricta, etc.) el sitio sigue funcionando igual,
+    // solo que sin recordar entre visitas.
+    const CLAVE_AHORA = 'punto-de-fuga:ahora-mismo';
+    const CLAVE_ENTRADAS = 'punto-de-fuga:entradas';
+
+    function esAhoraValido(datos) {
+      return Array.isArray(datos) && datos.every(
+        (d) => d && typeof d.tipo === 'string' && typeof d.texto === 'string'
+      );
+    }
+
+    function esEntradaValida(d) {
+      return d && ['fecha', 'categoria', 'etiqueta', 'titulo', 'texto']
+        .every((campo) => typeof d[campo] === 'string');
+    }
+
+    function cargarGuardado() {
+      try {
+        const ahoraGuardado = JSON.parse(localStorage.getItem(CLAVE_AHORA));
+        if (esAhoraValido(ahoraGuardado)) perfil.ahoraMismo = ahoraGuardado;
+      } catch (err) {
+        console.warn('No se pudo leer "ahora mismo" guardado:', err);
+      }
+      try {
+        const entradasGuardadas = JSON.parse(localStorage.getItem(CLAVE_ENTRADAS));
+        if (Array.isArray(entradasGuardadas) && entradasGuardadas.every(esEntradaValida)) {
+          entradas.length = 0;
+          entradas.push(...entradasGuardadas);
+        }
+      } catch (err) {
+        console.warn('No se pudieron leer las entradas guardadas:', err);
+      }
+    }
+
+    function guardarAhora() {
+      try { localStorage.setItem(CLAVE_AHORA, JSON.stringify(perfil.ahoraMismo)); }
+      catch (err) { console.warn('No se pudo guardar "ahora mismo" en este navegador:', err); }
+    }
+
+    function guardarEntradas() {
+      try { localStorage.setItem(CLAVE_ENTRADAS, JSON.stringify(entradas)); }
+      catch (err) { console.warn('No se pudieron guardar las entradas en este navegador:', err); }
+    }
+
+    // "Ahora mismo": cada línea es editable directamente en la página.
+    // El cambio se guarda en este navegador al salir del campo (blur).
+    function renderAhora() {
+      const cont = document.getElementById('ahora-lista');
+      cont.innerHTML = '';
+      perfil.ahoraMismo.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'now-item';
+
+        const kind = document.createElement('span');
+        kind.className = 'kind';
+        kind.textContent = item.tipo;
+
+        const p = document.createElement('p');
+        p.textContent = item.texto;
+        p.contentEditable = 'true';
+        p.spellcheck = false;
+        p.addEventListener('blur', () => {
+          perfil.ahoraMismo[i].texto = p.textContent;
+          guardarAhora();
+        });
+
+        div.append(kind, p);
+        cont.appendChild(div);
+      });
+    }
+
+    // Bitácora: se puede agregar una entrada desde el formulario, o borrar
+    // cualquiera con la ×. Ambos cambios se guardan en este navegador.
+    function renderBitacora() {
+      const cont = document.getElementById('bitacora-lista');
+      cont.innerHTML = '';
+      entradas.forEach((item, i) => {
+        const entry = document.createElement('div');
+        entry.className = 'entry';
+
+        const meta = document.createElement('div');
+        meta.className = 'entry-meta';
+
+        const tag = document.createElement('span');
+        tag.className = `tag ${item.categoria}`;
+        tag.textContent = item.etiqueta;
+
+        const fecha = document.createElement('span');
+        fecha.textContent = item.fecha;
+
+        const borrar = document.createElement('button');
+        borrar.type = 'button';
+        borrar.className = 'entry-delete';
+        borrar.textContent = '×';
+        borrar.setAttribute('aria-label', 'Eliminar esta entrada');
+        borrar.addEventListener('click', () => {
+          entradas.splice(i, 1);
+          guardarEntradas();
+          renderBitacora();
+        });
+
+        meta.append(tag, fecha, borrar);
+
+        const h3 = document.createElement('h3');
+        h3.textContent = item.titulo;
+
+        const p = document.createElement('p');
+        p.textContent = item.texto;
+
+        entry.append(meta, h3, p);
+        cont.appendChild(entry);
+      });
+    }
+
+    cargarGuardado();
+    renderAhora();
+    renderBitacora();
+
+    document.getElementById('nueva-entrada').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const categoria = document.getElementById('campo-categoria').value;
+      const titulo = document.getElementById('campo-titulo').value.trim();
+      const texto = document.getElementById('campo-texto').value.trim();
+      if (!titulo || !texto) return;
+
+      entradas.unshift({
+        fecha: formatearFecha(new Date()),
+        categoria,
+        etiqueta: etiquetas[categoria],
+        titulo,
+        texto
+      });
+
+      guardarEntradas();
+      renderBitacora();
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
