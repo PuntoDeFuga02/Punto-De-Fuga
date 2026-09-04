@@ -286,6 +286,7 @@
   }
 
   .entry p { margin: 0; max-width: 60ch; color: var(--ink-soft); font-size: 1.02rem; }
+  .entry p + p { margin-top: 0.9em; }
 
   .entry-delete {
     margin-left: auto;
@@ -606,6 +607,7 @@
     };
 
     const entradas = [
+      { fecha: "01 sep 2026", categoria: "vida", etiqueta: "Vida", titulo: "El mito de \"les voy a demostrar que se equivocaron\"", texto: "Hay una frase que se repite tanto que ya nadie la cuestiona: que el desprecio y la duda ajena son el mejor combustible, que no hay nada como que alguien te diga \"no vas a poder\" para sacar fuerzas de donde no sabías que tenías. Y hay algo de cierto ahí — la evidencia psicológica es clara en que lo negativo pesa más que lo positivo: nos afecta más una crítica que diez elogios, un mal recuerdo que diez buenos (Baumeister et al., 2001). Pero esa asimetría no significa lo que la frase motivacional quiere que signifique.\n\nCuando se mide qué le hace realmente la crítica al desempeño de alguien, el panorama es mucho menos heroico. Un metaanálisis con más de 600 estudios y 23 mil observaciones encontró que la retroalimentación mejora el rendimiento en promedio, sí — pero en más de un tercio de los casos, simplemente lo empeora (Kluger y DeNisi, 1996). La duda ajena no es un motor confiable. La mayoría de las veces, solo pesa.\n\nEntonces, ¿por qué a veces sí funciona eso de \"les voy a demostrar que se equivocaron\"? Aquí está lo que de verdad me pareció valioso encontrar: un estudio de 2020 muestra que el llamado \"efecto underdog\" — que las bajas expectativas de otros terminen aumentando tu desempeño — depende casi por completo de una sola variable: qué tan creíble te parece quien duda de ti. Si la persona que te subestima no te parece una autoridad legítima, su duda te enoja lo suficiente como para esforzarte más. Pero si sí la consideras creíble — un profesor, alguien que de verdad sabe del tema — pasa exactamente lo contrario: te hunde (Nurmohamed, 2020). Es el mismo mecanismo psicológico produciendo resultados opuestos, dependiendo de un solo juicio que haces tú, casi sin darte cuenta: ¿esta persona tiene autoridad real sobre lo que yo puedo lograr, o no?\n\nCon esto, la frase motivacional queda casi al revés de como la contamos siempre. No es que lo negativo motive por sí solo — la mayoría de las veces hace justo lo contrario. Lo que de verdad decide si una duda te hunde o te impulsa no es la duda en sí, sino la decisión, consciente o no, de si esa persona se ha ganado el derecho de definir lo que tú eres capaz de lograr. Esa es, creo, la pregunta que vale la pena hacerse la próxima vez que alguien dude de ti: no \"¿me voy a dejar hundir?\", sino \"¿esta persona en verdad tiene autoridad sobre esto?\"." },
       { fecha: "01 sep 2026", categoria: "derecho", etiqueta: "Derecho", titulo: "La IA ya debe avisar que es IA. La pregunta es si a alguien le va a importar", texto: "Desde agosto de 2026, el Reglamento Europeo de IA obliga a etiquetar los deepfakes y los textos generados por IA sobre temas de interés público. Es una norma clara en el papel — pero el derecho no termina cuando se aprueba una ley: termina cuando alguien la cumple, alguien la ignora, y la sociedad decide qué tan en serio tomársela." },
       { fecha: "01 sep 2026", categoria: "ia", etiqueta: "IA", titulo: "¿Puede un modelo argumentar como abogado sin entender la ley?", texto: "Una nota corta sobre lo que separa generar un argumento jurídico plausible de realmente razonar sobre un caso." },
       { fecha: "28 ago 2026", categoria: "fisica", etiqueta: "Física", titulo: "Entropía y por qué las cosas se desordenan solas", texto: "Apuntes de un video que por fin me hizo entender la segunda ley de la termodinámica sin fórmulas." },
@@ -822,10 +824,16 @@
         const h3 = document.createElement('h3');
         h3.textContent = item.titulo;
 
-        const p = document.createElement('p');
-        p.textContent = item.texto;
+        // Las entradas mas largas pueden traer varios parrafos separados
+        // por una linea en blanco (\n\n) en el texto original.
+        item.texto.split(/\n\s*\n/).forEach((parrafo) => {
+          const p = document.createElement('p');
+          p.textContent = parrafo.trim();
+          entry.appendChild(p);
+        });
 
-        entry.append(meta, h3, p);
+        entry.prepend(h3);
+        entry.prepend(meta);
         cont.appendChild(entry);
       });
 
