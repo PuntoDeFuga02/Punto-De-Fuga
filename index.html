@@ -20,6 +20,7 @@
     --amber: #96692a;
     --rust: #8a4a34;
     --moss: #4f6f54;
+    --verde-margen: #46592f;
     --shadow: rgba(32, 28, 21, 0.08);
   }
 
@@ -33,6 +34,7 @@
       --amber: #d9a856;
       --rust: #c0715a;
       --moss: #8aab8f;
+      --verde-margen: #93ac72;
       --shadow: rgba(0, 0, 0, 0.35);
     }
   }
@@ -178,10 +180,11 @@
 
   .now-card {
     background: var(--bg-raised);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    padding: 1.75rem 1.85rem;
-    box-shadow: 0 8px 24px var(--shadow);
+    border-top: 3px double var(--verde-margen);
+    border-bottom: 3px double var(--verde-margen);
+    border-radius: 0;
+    padding: 2.25rem 1.85rem;
+    box-shadow: none;
   }
 
   .now-list { display: grid; gap: 1.5rem; }
@@ -198,22 +201,13 @@
   }
 
   .now-item .kind {
-    color: var(--amber);
+    color: var(--verde-margen);
     font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-weight: 600;
   }
   .now-item p { margin: 0; max-width: 58ch; font-size: 1.02rem; }
-
-  .now-item p[contenteditable="true"] {
-    cursor: text;
-    border-bottom: 1px dashed var(--rule);
-  }
-  .now-item p[contenteditable="true"]:focus {
-    outline: none;
-    border-bottom-color: var(--amber);
-  }
 
   .filtro-categorias {
     display: flex;
@@ -294,6 +288,22 @@
     border-top: 1px dashed var(--rule);
   }
   .entry-comentarios:last-child { margin-bottom: 0.5rem; }
+
+  .comentarios-boton {
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .comentarios-boton:hover { border-color: var(--amber); color: var(--amber); }
+  .comentarios-boton:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 
   .red-controles {
     display: flex;
@@ -479,12 +489,13 @@
 
     <section id="ahora">
       <div class="section-head">
-        <h2>Ahora mismo</h2>
-        <span>haz clic en cualquier línea para escribir la tuya</span>
+        <h2>Al margen</h2>
+        <span>lo que leo, veo y pienso ahora mismo</span>
       </div>
       <div class="now-card">
         <div class="now-list" id="ahora-lista"></div>
       </div>
+      <div class="entry-comentarios" id="ahora-comentarios"></div>
     </section>
 
     <section id="bitacora">
@@ -598,39 +609,56 @@
     document.title = perfil.nombre + " — Bitácora";
     document.querySelector('.masthead-name').textContent = perfil.nombre;
 
-    // Guardado en este navegador (localStorage): así lo que escribas
-    // sigue ahí la próxima vez que abras el archivo en el mismo navegador
-    // y la misma computadora. Si el navegador lo bloquea (modo privado,
-    // configuración estricta, etc.) el sitio sigue funcionando igual,
-    // solo que sin recordar entre visitas.
-    const CLAVE_AHORA = 'punto-de-fuga:ahora-mismo';
+    // Los comentarios de Giscus se cargan solo cuando alguien hace clic
+    // (no de entrada), y solo un hilo puede estar abierto a la vez en toda
+    // la página: Giscus no soporta varias instancias simultáneas — si se
+    // cargan dos, la segunda se queda en blanco. Por eso, al abrir uno
+    // nuevo, cualquier otro que estuviera abierto se cierra solo.
+    let comentariosActivos = null;
 
-    function esAhoraValido(datos) {
-      return Array.isArray(datos) && datos.every(
-        (d) => d && typeof d.tipo === 'string' && typeof d.texto === 'string'
-      );
+    function poblarComentarios(contenedor, term) {
+      contenedor.innerHTML = '';
+      const boton = document.createElement('button');
+      boton.type = 'button';
+      boton.className = 'comentarios-boton';
+      boton.textContent = 'Mostrar comentarios y reacciones';
+      boton.addEventListener('click', () => activarComentarios(contenedor, term));
+      contenedor.appendChild(boton);
     }
 
-    function cargarGuardado() {
-      try {
-        const ahoraGuardado = JSON.parse(localStorage.getItem(CLAVE_AHORA));
-        if (esAhoraValido(ahoraGuardado)) perfil.ahoraMismo = ahoraGuardado;
-      } catch (err) {
-        console.warn('No se pudo leer "ahora mismo" guardado:', err);
+    function activarComentarios(contenedor, term) {
+      if (comentariosActivos && comentariosActivos.contenedor !== contenedor) {
+        poblarComentarios(comentariosActivos.contenedor, comentariosActivos.term);
       }
+
+      contenedor.innerHTML = '';
+      const giscusScript = document.createElement('script');
+      giscusScript.src = 'https://giscus.app/client.js';
+      giscusScript.setAttribute('data-repo', 'PuntoDeFuga02/Punto-De-Fuga');
+      giscusScript.setAttribute('data-repo-id', 'R_kgDOULiC0A');
+      giscusScript.setAttribute('data-category', 'Announcements');
+      giscusScript.setAttribute('data-category-id', 'DIC_kwDOULiC0M4DEslM');
+      giscusScript.setAttribute('data-mapping', 'specific');
+      giscusScript.setAttribute('data-term', term);
+      giscusScript.setAttribute('data-strict', '0');
+      giscusScript.setAttribute('data-reactions-enabled', '1');
+      giscusScript.setAttribute('data-emit-metadata', '0');
+      giscusScript.setAttribute('data-input-position', 'bottom');
+      giscusScript.setAttribute('data-theme', 'preferred_color_scheme');
+      giscusScript.setAttribute('data-lang', 'es');
+      giscusScript.crossOrigin = 'anonymous';
+      giscusScript.async = true;
+      contenedor.appendChild(giscusScript);
+
+      comentariosActivos = { contenedor, term };
     }
 
-    function guardarAhora() {
-      try { localStorage.setItem(CLAVE_AHORA, JSON.stringify(perfil.ahoraMismo)); }
-      catch (err) { console.warn('No se pudo guardar "ahora mismo" en este navegador:', err); }
-    }
-
-    // "Ahora mismo": cada línea es editable directamente en la página.
-    // El cambio se guarda en este navegador al salir del campo (blur).
+    // "Al margen" es contenido curado, igual que la Bitácora y "En la
+    // red": solo se edita aquí en el código, no desde el sitio.
     function renderAhora() {
       const cont = document.getElementById('ahora-lista');
       cont.innerHTML = '';
-      perfil.ahoraMismo.forEach((item, i) => {
+      perfil.ahoraMismo.forEach((item) => {
         const div = document.createElement('div');
         div.className = 'now-item';
 
@@ -640,16 +668,13 @@
 
         const p = document.createElement('p');
         p.textContent = item.texto;
-        p.contentEditable = 'true';
-        p.spellcheck = false;
-        p.addEventListener('blur', () => {
-          perfil.ahoraMismo[i].texto = p.textContent;
-          guardarAhora();
-        });
 
         div.append(kind, p);
         cont.appendChild(div);
       });
+
+      // Un solo hilo de comentarios para toda la sección (no por línea).
+      poblarComentarios(document.getElementById('ahora-comentarios'), 'al-margen');
     }
 
     // Filtro por categoría: "todas" o una de las cuatro categorías.
@@ -744,24 +769,8 @@
         // con las demás), usando el título como identificador.
         const comentarios = document.createElement('div');
         comentarios.className = 'entry-comentarios';
-        const giscusScript = document.createElement('script');
-        giscusScript.src = 'https://giscus.app/client.js';
-        giscusScript.setAttribute('data-repo', 'PuntoDeFuga02/Punto-De-Fuga');
-        giscusScript.setAttribute('data-repo-id', 'R_kgDOULiC0A');
-        giscusScript.setAttribute('data-category', 'Announcements');
-        giscusScript.setAttribute('data-category-id', 'DIC_kwDOULiC0M4DEslM');
-        giscusScript.setAttribute('data-mapping', 'specific');
-        giscusScript.setAttribute('data-term', slugificar(item.titulo));
-        giscusScript.setAttribute('data-strict', '0');
-        giscusScript.setAttribute('data-reactions-enabled', '1');
-        giscusScript.setAttribute('data-emit-metadata', '0');
-        giscusScript.setAttribute('data-input-position', 'bottom');
-        giscusScript.setAttribute('data-theme', 'preferred_color_scheme');
-        giscusScript.setAttribute('data-lang', 'es');
-        giscusScript.crossOrigin = 'anonymous';
-        giscusScript.async = true;
-        comentarios.appendChild(giscusScript);
         cont.appendChild(comentarios);
+        poblarComentarios(comentarios, slugificar(item.titulo));
       });
 
       if (visibles.length === 0) {
@@ -870,7 +879,6 @@
       document.getElementById('red-lista').scrollBy({ left: 300, behavior: 'smooth' });
     });
 
-    cargarGuardado();
     renderAhora();
     renderFiltros();
     renderBitacora();
