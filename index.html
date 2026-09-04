@@ -199,8 +199,8 @@
     background-color: var(--bg);
     background-image: repeating-linear-gradient(
       90deg,
-      rgba(217, 168, 86, 0.16) 0px,
-      rgba(217, 168, 86, 0.16) 1px,
+      rgba(217, 168, 86, 0.05) 0px,
+      rgba(217, 168, 86, 0.05) 1px,
       transparent 1px,
       transparent 15px
     );
@@ -328,24 +328,27 @@
   .catalogo {
     margin-top: 3.5rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1px;
     background: var(--rule);
     border: 1px solid var(--rule);
+  }
+  @media (min-width: 640px) {
+    .catalogo { grid-template-columns: repeat(4, 1fr); }
   }
 
   .catalogo-carta {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    background: var(--bg-raised);
+    background: var(--bg);
     padding: 1.4rem 1.3rem 1.6rem;
     border: none;
     border-top: 3px solid var(--amber);
     position: relative;
     transition: background 0.2s ease;
   }
-  .catalogo-carta:hover { background: var(--bg); }
+  .catalogo-carta:hover { background: var(--bg-raised); }
   .catalogo-carta:focus-visible { outline: 2px solid var(--amber); outline-offset: -2px; }
 
   .catalogo-numero {
