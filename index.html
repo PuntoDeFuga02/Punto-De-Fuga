@@ -40,6 +40,60 @@
   }
 
   * { box-sizing: border-box; }
+
+  .portada {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 2rem;
+    padding: 2rem;
+    background-color: #2c3620;
+    background-image:
+      radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.06), transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+    background-blend-mode: normal, overlay;
+    cursor: pointer;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  .portada.oculta { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .portada-nombre {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2.8rem, 9vw, 5rem);
+    color: #f2ecd9;
+  }
+
+  .portada-cita { margin: 0; max-width: 42ch; }
+  .portada-cita p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.4vw, 1.3rem);
+    line-height: 1.6;
+    color: rgba(242, 236, 217, 0.88);
+    margin: 0;
+  }
+  .portada-cita cite {
+    display: block;
+    margin-top: 0.85rem;
+    font-style: normal;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: rgba(242, 236, 217, 0.55);
+  }
+
+  .portada-entrar {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(242, 236, 217, 0.55);
+  }
   html { scroll-behavior: smooth; }
 
   body {
@@ -535,6 +589,15 @@
 </style>
 </head>
 <body>
+  <div class="portada" id="portada" role="button" tabindex="0" aria-label="Entrar a Serendipia">
+    <div class="portada-nombre">Serendipia</div>
+    <blockquote class="portada-cita">
+      <p>"En pleno invierno, aprendí al fin que había en mí un verano invencible."</p>
+      <cite>— Albert Camus</cite>
+    </blockquote>
+    <span class="portada-entrar">Toca para entrar</span>
+  </div>
+
   <div class="progress-bar" id="progress-bar"></div>
   <header class="masthead">
     <div class="masthead-id">
@@ -1026,6 +1089,19 @@
     renderBitacora();
     renderRed();
     actualizarProgreso();
+
+    // Portada: cubre todo al abrir el sitio; un clic (o Enter/Espacio)
+    // la quita y libera el scroll de la página.
+    const portada = document.getElementById('portada');
+    document.documentElement.style.overflow = 'hidden';
+    function cerrarPortada() {
+      portada.classList.add('oculta');
+      document.documentElement.style.overflow = '';
+    }
+    portada.addEventListener('click', cerrarPortada);
+    portada.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cerrarPortada(); }
+    });
   </script>
 </body>
 </html>
