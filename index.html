@@ -288,70 +288,12 @@
   .entry p { margin: 0; max-width: 60ch; color: var(--ink-soft); font-size: 1.02rem; }
   .entry p + p { margin-top: 0.9em; }
 
-  .entry-delete {
-    margin-left: auto;
-    background: none;
-    border: none;
-    color: var(--ink-soft);
-    font-size: 1.1rem;
-    line-height: 1;
-    padding: 0 0.25rem;
-    cursor: pointer;
+  .entry-comentarios {
+    margin: 1.5rem 0 3rem 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--rule);
   }
-  .entry-delete:hover { color: var(--rust); }
-  .entry-delete:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-
-  .entry-form {
-    background: var(--bg-raised);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    padding: 1.5rem 1.75rem;
-    margin-bottom: 3rem;
-    display: grid;
-    gap: 0.85rem;
-    box-shadow: 0 8px 24px var(--shadow);
-  }
-
-  .entry-form-row { display: grid; grid-template-columns: 140px 1fr; gap: 0.75rem; }
-
-  .entry-form select,
-  .entry-form input,
-  .entry-form textarea {
-    background: var(--bg);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    color: var(--ink);
-    font-family: 'Public Sans', sans-serif;
-    font-size: 0.95rem;
-    padding: 0.55rem 0.75rem;
-  }
-
-  .entry-form select:focus-visible,
-  .entry-form input:focus-visible,
-  .entry-form textarea:focus-visible {
-    outline: 2px solid var(--amber);
-    outline-offset: 1px;
-  }
-
-  .entry-form textarea { min-height: 90px; resize: vertical; font-family: inherit; }
-
-  .entry-form button {
-    justify-self: start;
-    background: var(--amber);
-    border: none;
-    border-radius: 4px;
-    color: var(--bg);
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 0.6rem 1.2rem;
-    cursor: pointer;
-  }
-  .entry-form button:hover { opacity: 0.88; }
-  .entry-form button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-
-  @media (max-width: 640px) {
-    .entry-form-row { grid-template-columns: 1fr; }
-  }
+  .entry-comentarios:last-child { margin-bottom: 0.5rem; }
 
   .red-controles {
     display: flex;
@@ -471,6 +413,31 @@
 
   .about p { max-width: 60ch; color: var(--ink-soft); font-size: 1.05rem; }
 
+  .camus {
+    margin: 3rem auto 0;
+    max-width: 46ch;
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .camus p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--ink);
+    max-width: none;
+    margin: 0;
+  }
+  .camus cite {
+    display: block;
+    margin-top: 0.9rem;
+    font-style: normal;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+
   footer {
     margin-top: 7rem;
     padding-top: 2rem;
@@ -500,7 +467,6 @@
       <a href="#bitacora">Bitácora</a>
       <a href="#en-la-red">En la red</a>
       <a href="#sobre">Sobre esto</a>
-      <a href="#comentarios">Comentarios</a>
     </nav>
   </header>
 
@@ -524,24 +490,10 @@
     <section id="bitacora">
       <div class="section-head">
         <h2>Bitácora</h2>
-        <span>agrega una entrada abajo, o borra los ejemplos con la ×</span>
+        <span>lo que voy pensando y escribiendo, con espacio para comentar cada una</span>
       </div>
 
       <div class="filtro-categorias" id="filtro-categorias"></div>
-
-      <form id="nueva-entrada" class="entry-form">
-        <div class="entry-form-row">
-          <select id="campo-categoria">
-            <option value="derecho">Derecho</option>
-            <option value="ia">IA</option>
-            <option value="fisica">Física</option>
-            <option value="vida">Vida</option>
-          </select>
-          <input type="text" id="campo-titulo" placeholder="Título de la entrada" required />
-        </div>
-        <textarea id="campo-texto" placeholder="Escribe aquí lo que quieras dejar anotado..." required></textarea>
-        <button type="submit">Agregar entrada</button>
-      </form>
 
       <div id="bitacora-lista"></div>
     </section>
@@ -564,28 +516,10 @@
       </div>
       <p>Este sitio nació de la costumbre de anotar todo lo que se cruza: ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que voy leyendo y viendo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
       <p>Todo lo que aparece en "En la red" es de otras personas: cada tarjeta enlaza directo a la fuente original (la noticia, el TikTok, el video), con crédito a quien lo hizo. La idea es señalar cosas que valen la pena, no reproducirlas ni presentarlas como propias.</p>
-    </section>
-
-    <section id="comentarios">
-      <div class="section-head">
-        <h2>Comentarios</h2>
-        <span>con tu cuenta de GitHub — un solo hilo para todo el sitio</span>
-      </div>
-      <script src="https://giscus.app/client.js"
-              data-repo="PuntoDeFuga02/Punto-De-Fuga"
-              data-repo-id="R_kgDOULiC0A"
-              data-category="Announcements"
-              data-category-id="DIC_kwDOULiC0M4DEslM"
-              data-mapping="pathname"
-              data-strict="0"
-              data-reactions-enabled="1"
-              data-emit-metadata="0"
-              data-input-position="bottom"
-              data-theme="preferred_color_scheme"
-              data-lang="es"
-              crossorigin="anonymous"
-              async>
-      </script>
+      <blockquote class="camus">
+        <p>"En pleno invierno, aprendí al fin que había en mí un verano invencible."</p>
+        <cite>— Albert Camus, <em>Regreso a Tipasa</em></cite>
+      </blockquote>
     </section>
 
     <footer>
@@ -607,12 +541,7 @@
     };
 
     const entradas = [
-      { fecha: "01 sep 2026", categoria: "vida", etiqueta: "Vida", titulo: "El mito de \"les voy a demostrar que se equivocaron\"", texto: "Hay una frase que se repite tanto que ya nadie la cuestiona: que el desprecio y la duda ajena son el mejor combustible, que no hay nada como que alguien te diga \"no vas a poder\" para sacar fuerzas de donde no sabías que tenías. Y hay algo de cierto ahí — la evidencia psicológica es clara en que lo negativo pesa más que lo positivo: nos afecta más una crítica que diez elogios, un mal recuerdo que diez buenos (Baumeister et al., 2001). Pero esa asimetría no significa lo que la frase motivacional quiere que signifique.\n\nCuando se mide qué le hace realmente la crítica al desempeño de alguien, el panorama es mucho menos heroico. Un metaanálisis con más de 600 estudios y 23 mil observaciones encontró que la retroalimentación mejora el rendimiento en promedio, sí — pero en más de un tercio de los casos, simplemente lo empeora (Kluger y DeNisi, 1996). La duda ajena no es un motor confiable. La mayoría de las veces, solo pesa.\n\nEntonces, ¿por qué a veces sí funciona eso de \"les voy a demostrar que se equivocaron\"? Aquí está lo que de verdad me pareció valioso encontrar: un estudio de 2020 muestra que el llamado \"efecto underdog\" — que las bajas expectativas de otros terminen aumentando tu desempeño — depende casi por completo de una sola variable: qué tan creíble te parece quien duda de ti. Si la persona que te subestima no te parece una autoridad legítima, su duda te enoja lo suficiente como para esforzarte más. Pero si sí la consideras creíble — un profesor, alguien que de verdad sabe del tema — pasa exactamente lo contrario: te hunde (Nurmohamed, 2020). Es el mismo mecanismo psicológico produciendo resultados opuestos, dependiendo de un solo juicio que haces tú, casi sin darte cuenta: ¿esta persona tiene autoridad real sobre lo que yo puedo lograr, o no?\n\nCon esto, la frase motivacional queda casi al revés de como la contamos siempre. No es que lo negativo motive por sí solo — la mayoría de las veces hace justo lo contrario. Lo que de verdad decide si una duda te hunde o te impulsa no es la duda en sí, sino la decisión, consciente o no, de si esa persona se ha ganado el derecho de definir lo que tú eres capaz de lograr. Esa es, creo, la pregunta que vale la pena hacerse la próxima vez que alguien dude de ti: no \"¿me voy a dejar hundir?\", sino \"¿esta persona en verdad tiene autoridad sobre esto?\"." },
-      { fecha: "01 sep 2026", categoria: "derecho", etiqueta: "Derecho", titulo: "La IA ya debe avisar que es IA. La pregunta es si a alguien le va a importar", texto: "Desde agosto de 2026, el Reglamento Europeo de IA obliga a etiquetar los deepfakes y los textos generados por IA sobre temas de interés público. Es una norma clara en el papel — pero el derecho no termina cuando se aprueba una ley: termina cuando alguien la cumple, alguien la ignora, y la sociedad decide qué tan en serio tomársela." },
-      { fecha: "01 sep 2026", categoria: "ia", etiqueta: "IA", titulo: "¿Puede un modelo argumentar como abogado sin entender la ley?", texto: "Una nota corta sobre lo que separa generar un argumento jurídico plausible de realmente razonar sobre un caso." },
-      { fecha: "28 ago 2026", categoria: "fisica", etiqueta: "Física", titulo: "Entropía y por qué las cosas se desordenan solas", texto: "Apuntes de un video que por fin me hizo entender la segunda ley de la termodinámica sin fórmulas." },
-      { fecha: "25 ago 2026", categoria: "derecho", etiqueta: "Derecho", titulo: "Lo que un contrato antiguo me enseñó sobre confianza", texto: "Una reflexión de clase que se quedó pensando más allá del examen." },
-      { fecha: "20 ago 2026", categoria: "vida", etiqueta: "Vida", titulo: "Aprender algo nuevo a los veintitantos, sin miedo a empezar de cero", texto: "Por qué este sitio existe, en el fondo." }
+      { fecha: "01 sep 2026", categoria: "vida", etiqueta: "Vida", titulo: "El mito de \"les voy a demostrar que se equivocaron\"", texto: "Hay una frase que se repite tanto que ya nadie la cuestiona: que el desprecio y la duda ajena son el mejor combustible, que no hay nada como que alguien te diga \"no vas a poder\" para sacar fuerzas de donde no sabías que tenías. Y hay algo de cierto ahí — la evidencia psicológica es clara en que lo negativo pesa más que lo positivo: nos afecta más una crítica que diez elogios, un mal recuerdo que diez buenos (Baumeister et al., 2001). Pero esa asimetría no significa lo que la frase motivacional quiere que signifique.\n\nCuando se mide qué le hace realmente la crítica al desempeño de alguien, el panorama es mucho menos heroico. Un metaanálisis con más de 600 estudios y 23 mil observaciones encontró que la retroalimentación mejora el rendimiento en promedio, sí — pero en más de un tercio de los casos, simplemente lo empeora (Kluger y DeNisi, 1996). La duda ajena no es un motor confiable. La mayoría de las veces, solo pesa.\n\nEntonces, ¿por qué a veces sí funciona eso de \"les voy a demostrar que se equivocaron\"? Aquí está lo que de verdad me pareció valioso encontrar: un estudio de 2020 muestra que el llamado \"efecto underdog\" — que las bajas expectativas de otros terminen aumentando tu desempeño — depende casi por completo de una sola variable: qué tan creíble te parece quien duda de ti. Si la persona que te subestima no te parece una autoridad legítima, su duda te enoja lo suficiente como para esforzarte más. Pero si sí la consideras creíble — un profesor, alguien que de verdad sabe del tema — pasa exactamente lo contrario: te hunde (Nurmohamed, 2020). Es el mismo mecanismo psicológico produciendo resultados opuestos, dependiendo de un solo juicio que haces tú, casi sin darte cuenta: ¿esta persona tiene autoridad real sobre lo que yo puedo lograr, o no?\n\nCon esto, la frase motivacional queda casi al revés de como la contamos siempre. No es que lo negativo motive por sí solo — la mayoría de las veces hace justo lo contrario. Lo que de verdad decide si una duda te hunde o te impulsa no es la duda en sí, sino la decisión, consciente o no, de si esa persona se ha ganado el derecho de definir lo que tú eres capaz de lograr. Esa es, creo, la pregunta que vale la pena hacerse la próxima vez que alguien dude de ti: no \"¿me voy a dejar hundir?\", sino \"¿esta persona en verdad tiene autoridad sobre esto?\"." }
     ];
 
     // "En la red": noticias y videos (incluye TikToks) que tú me pidas agregar.
@@ -669,31 +598,17 @@
     document.title = perfil.nombre + " — Bitácora";
     document.querySelector('.masthead-name').textContent = perfil.nombre;
 
-    const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-    function formatearFecha(fecha) {
-      const dia = String(fecha.getDate()).padStart(2, "0");
-      return `${dia} ${meses[fecha.getMonth()]} ${fecha.getFullYear()}`;
-    }
-
-    const etiquetas = { derecho: "Derecho", ia: "IA", fisica: "Física", vida: "Vida" };
-
     // Guardado en este navegador (localStorage): así lo que escribas
     // sigue ahí la próxima vez que abras el archivo en el mismo navegador
     // y la misma computadora. Si el navegador lo bloquea (modo privado,
     // configuración estricta, etc.) el sitio sigue funcionando igual,
     // solo que sin recordar entre visitas.
     const CLAVE_AHORA = 'punto-de-fuga:ahora-mismo';
-    const CLAVE_ENTRADAS = 'punto-de-fuga:entradas';
 
     function esAhoraValido(datos) {
       return Array.isArray(datos) && datos.every(
         (d) => d && typeof d.tipo === 'string' && typeof d.texto === 'string'
       );
-    }
-
-    function esEntradaValida(d) {
-      return d && ['fecha', 'categoria', 'etiqueta', 'titulo', 'texto']
-        .every((campo) => typeof d[campo] === 'string');
     }
 
     function cargarGuardado() {
@@ -703,25 +618,11 @@
       } catch (err) {
         console.warn('No se pudo leer "ahora mismo" guardado:', err);
       }
-      try {
-        const entradasGuardadas = JSON.parse(localStorage.getItem(CLAVE_ENTRADAS));
-        if (Array.isArray(entradasGuardadas) && entradasGuardadas.every(esEntradaValida)) {
-          entradas.length = 0;
-          entradas.push(...entradasGuardadas);
-        }
-      } catch (err) {
-        console.warn('No se pudieron leer las entradas guardadas:', err);
-      }
     }
 
     function guardarAhora() {
       try { localStorage.setItem(CLAVE_AHORA, JSON.stringify(perfil.ahoraMismo)); }
       catch (err) { console.warn('No se pudo guardar "ahora mismo" en este navegador:', err); }
-    }
-
-    function guardarEntradas() {
-      try { localStorage.setItem(CLAVE_ENTRADAS, JSON.stringify(entradas)); }
-      catch (err) { console.warn('No se pudieron guardar las entradas en este navegador:', err); }
     }
 
     // "Ahora mismo": cada línea es editable directamente en la página.
@@ -765,6 +666,9 @@
     function renderFiltros() {
       const cont = document.getElementById('filtro-categorias');
       cont.innerHTML = '';
+      // Con una sola entrada no hay nada que filtrar todavía.
+      if (entradas.length <= 1) { cont.style.display = 'none'; return; }
+      cont.style.display = '';
       categoriasFiltro.forEach((cat) => {
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -779,8 +683,19 @@
       });
     }
 
-    // Bitácora: se puede agregar una entrada desde el formulario, o borrar
-    // cualquiera con la ×. Ambos cambios se guardan en este navegador.
+    // Convierte un título en un identificador simple (sin acentos, en
+    // minúsculas) para usarlo como hilo de comentarios propio de esa entrada.
+    function slugificar(texto) {
+      return texto
+        .normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+    }
+
+    // Bitácora: son entradas curadas, no se agregan ni se borran desde el
+    // sitio. Cada una trae su propio hilo de comentarios (Giscus), separado
+    // del de las demás.
     function renderBitacora() {
       const cont = document.getElementById('bitacora-lista');
       cont.innerHTML = '';
@@ -808,18 +723,7 @@
         fecha.className = 'fecha';
         fecha.textContent = item.fecha;
 
-        const borrar = document.createElement('button');
-        borrar.type = 'button';
-        borrar.className = 'entry-delete';
-        borrar.textContent = '×';
-        borrar.setAttribute('aria-label', 'Eliminar esta entrada');
-        borrar.addEventListener('click', () => {
-          entradas.splice(i, 1);
-          guardarEntradas();
-          renderBitacora();
-        });
-
-        meta.append(num, tag, fecha, borrar);
+        meta.append(num, tag, fecha);
 
         const h3 = document.createElement('h3');
         h3.textContent = item.titulo;
@@ -835,6 +739,29 @@
         entry.prepend(h3);
         entry.prepend(meta);
         cont.appendChild(entry);
+
+        // Un hilo de comentarios propio para esta entrada (no compartido
+        // con las demás), usando el título como identificador.
+        const comentarios = document.createElement('div');
+        comentarios.className = 'entry-comentarios';
+        const giscusScript = document.createElement('script');
+        giscusScript.src = 'https://giscus.app/client.js';
+        giscusScript.setAttribute('data-repo', 'PuntoDeFuga02/Punto-De-Fuga');
+        giscusScript.setAttribute('data-repo-id', 'R_kgDOULiC0A');
+        giscusScript.setAttribute('data-category', 'Announcements');
+        giscusScript.setAttribute('data-category-id', 'DIC_kwDOULiC0M4DEslM');
+        giscusScript.setAttribute('data-mapping', 'specific');
+        giscusScript.setAttribute('data-term', slugificar(item.titulo));
+        giscusScript.setAttribute('data-strict', '0');
+        giscusScript.setAttribute('data-reactions-enabled', '1');
+        giscusScript.setAttribute('data-emit-metadata', '0');
+        giscusScript.setAttribute('data-input-position', 'bottom');
+        giscusScript.setAttribute('data-theme', 'preferred_color_scheme');
+        giscusScript.setAttribute('data-lang', 'es');
+        giscusScript.crossOrigin = 'anonymous';
+        giscusScript.async = true;
+        comentarios.appendChild(giscusScript);
+        cont.appendChild(comentarios);
       });
 
       if (visibles.length === 0) {
@@ -949,26 +876,6 @@
     renderBitacora();
     renderRed();
     actualizarProgreso();
-
-    document.getElementById('nueva-entrada').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const categoria = document.getElementById('campo-categoria').value;
-      const titulo = document.getElementById('campo-titulo').value.trim();
-      const texto = document.getElementById('campo-texto').value.trim();
-      if (!titulo || !texto) return;
-
-      entradas.unshift({
-        fecha: formatearFecha(new Date()),
-        categoria,
-        etiqueta: etiquetas[categoria],
-        titulo,
-        texto
-      });
-
-      guardarEntradas();
-      renderBitacora();
-      e.target.reset();
-    });
   </script>
 </body>
 </html>
