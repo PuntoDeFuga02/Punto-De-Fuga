@@ -107,7 +107,7 @@
   }
   .lector.activo { opacity: 1; visibility: visible; }
 
-  .lector-cerrar {
+  .capa-cerrar {
     position: fixed;
     top: 1.25rem;
     right: clamp(1.25rem, 5vw, 3rem);
@@ -123,8 +123,8 @@
     z-index: 1;
     transition: all 0.2s ease;
   }
-  .lector-cerrar:hover { border-color: var(--amber); color: var(--amber); }
-  .lector-cerrar:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  .capa-cerrar:hover { border-color: var(--amber); color: var(--amber); }
+  .capa-cerrar:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 
   .lector-contenido {
     max-width: 680px;
@@ -158,6 +158,29 @@
   .lector-contenido .entry-comentarios {
     margin-left: 0;
     margin-top: 3rem;
+  }
+
+  /* Cada ala (Poemas, Ensayos, Al margen, Préstamos, Sobre esto) vive
+     como su propia capa de pantalla completa, oculta hasta que se abre
+     desde el menú. Dentro, un ensayo o poema abre otra capa encima
+     (el .lector) — capas dentro de capas. */
+  .capa-seccion {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: var(--bg);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    margin-top: 0 !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .capa-seccion.activa { opacity: 1; visibility: visible; }
+
+  .capa-interior {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: clamp(4rem, 10vw, 6rem) clamp(1.5rem, 6vw, 2rem) 6rem;
   }
 
   html { scroll-behavior: smooth; }
@@ -642,7 +665,7 @@
   </div>
 
   <div class="lector" id="lector">
-    <button type="button" class="lector-cerrar" id="lector-cerrar" aria-label="Cerrar">×</button>
+    <button type="button" class="capa-cerrar" id="lector-cerrar" aria-label="Cerrar">×</button>
     <div class="lector-contenido" id="lector-contenido"></div>
   </div>
 
@@ -691,58 +714,73 @@
       </a>
     </nav>
 
-    <section id="poemas">
-      <div class="section-head">
-        <h2>Poemas</h2>
-        <span>verso, sin curar de más</span>
-      </div>
-      <div id="poemas-lista"></div>
-    </section>
-
-    <section id="ensayos">
-      <div class="section-head">
-        <h2>Ensayos</h2>
-        <span>lo que voy pensando y escribiendo, con espacio para comentar cada uno</span>
-      </div>
-
-      <div class="filtro-categorias" id="filtro-categorias"></div>
-
-      <div id="bitacora-lista"></div>
-    </section>
-
-    <section id="ahora">
-      <div class="section-head">
-        <h2>Al margen</h2>
-        <span>lo que leo, veo y pienso ahora mismo</span>
-      </div>
-      <div class="now-card">
-        <div class="now-list" id="ahora-lista"></div>
-      </div>
-      <div class="entry-comentarios" id="ahora-comentarios"></div>
-    </section>
-
-    <section id="prestamos">
-      <div class="section-head">
-        <h2>Préstamos</h2>
-        <div class="red-controles" id="red-controles">
-          <button type="button" id="red-prev" class="red-flecha" aria-label="Ver anteriores">‹</button>
-          <button type="button" id="red-next" class="red-flecha" aria-label="Ver siguientes">›</button>
-          <button type="button" id="red-toggle" class="red-ver-todos">Ver todos</button>
+    <section id="poemas" class="capa-seccion">
+      <button type="button" class="capa-cerrar" data-cerrar aria-label="Cerrar">×</button>
+      <div class="capa-interior">
+        <div class="section-head">
+          <h2>Poemas</h2>
+          <span>verso, sin curar de más</span>
         </div>
+        <div id="poemas-lista"></div>
       </div>
-      <div class="red-grid" id="red-lista"></div>
     </section>
 
-    <section id="sobre" class="about">
-      <div class="section-head">
-        <h2>Sobre esta biblioteca</h2>
+    <section id="ensayos" class="capa-seccion">
+      <button type="button" class="capa-cerrar" data-cerrar aria-label="Cerrar">×</button>
+      <div class="capa-interior">
+        <div class="section-head">
+          <h2>Ensayos</h2>
+          <span>lo que voy pensando y escribiendo, con espacio para comentar cada uno</span>
+        </div>
+
+        <div class="filtro-categorias" id="filtro-categorias"></div>
+
+        <div id="bitacora-lista"></div>
       </div>
-      <p>Serendipia nació de la costumbre de anotar todo lo que se cruza: poemas, ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que escribo, leo y veo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
-      <p>Todo lo que aparece en "Préstamos" es de otras personas: cada tarjeta enlaza directo a la fuente original (la noticia, el TikTok, el video), con crédito a quien lo hizo. La idea es señalar cosas que valen la pena, no reproducirlas ni presentarlas como propias.</p>
-      <blockquote class="camus">
-        <p>"En pleno invierno, aprendí al fin que había en mí un verano invencible."</p>
-        <cite>— Albert Camus, <em>Regreso a Tipasa</em></cite>
-      </blockquote>
+    </section>
+
+    <section id="ahora" class="capa-seccion">
+      <button type="button" class="capa-cerrar" data-cerrar aria-label="Cerrar">×</button>
+      <div class="capa-interior">
+        <div class="section-head">
+          <h2>Al margen</h2>
+          <span>lo que leo, veo y pienso ahora mismo</span>
+        </div>
+        <div class="now-card">
+          <div class="now-list" id="ahora-lista"></div>
+        </div>
+        <div class="entry-comentarios" id="ahora-comentarios"></div>
+      </div>
+    </section>
+
+    <section id="prestamos" class="capa-seccion">
+      <button type="button" class="capa-cerrar" data-cerrar aria-label="Cerrar">×</button>
+      <div class="capa-interior">
+        <div class="section-head">
+          <h2>Préstamos</h2>
+          <div class="red-controles" id="red-controles">
+            <button type="button" id="red-prev" class="red-flecha" aria-label="Ver anteriores">‹</button>
+            <button type="button" id="red-next" class="red-flecha" aria-label="Ver siguientes">›</button>
+            <button type="button" id="red-toggle" class="red-ver-todos">Ver todos</button>
+          </div>
+        </div>
+        <div class="red-grid" id="red-lista"></div>
+      </div>
+    </section>
+
+    <section id="sobre" class="capa-seccion about">
+      <button type="button" class="capa-cerrar" data-cerrar aria-label="Cerrar">×</button>
+      <div class="capa-interior">
+        <div class="section-head">
+          <h2>Sobre esta biblioteca</h2>
+        </div>
+        <p>Serendipia nació de la costumbre de anotar todo lo que se cruza: poemas, ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que escribo, leo y veo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
+        <p>Todo lo que aparece en "Préstamos" es de otras personas: cada tarjeta enlaza directo a la fuente original (la noticia, el TikTok, el video), con crédito a quien lo hizo. La idea es señalar cosas que valen la pena, no reproducirlas ni presentarlas como propias.</p>
+        <blockquote class="camus">
+          <p>"En pleno invierno, aprendí al fin que había en mí un verano invencible."</p>
+          <cite>— Albert Camus, <em>Regreso a Tipasa</em></cite>
+        </blockquote>
+      </div>
     </section>
 
     <footer>
@@ -969,8 +1007,48 @@
     }
 
     document.getElementById('lector-cerrar').addEventListener('click', cerrarLector);
+
+    // Cada ala (Poemas, Ensayos, Al margen, Préstamos, Sobre esto) es su
+    // propia capa de pantalla completa. Por defecto solo se ve el menú
+    // (portada -> hero + catálogo); un clic en una ficha o del menú abre
+    // esa ala encima de todo.
+    const idsCapas = ['poemas', 'ensayos', 'ahora', 'prestamos', 'sobre'];
+
+    function abrirCapa(id) {
+      if (!idsCapas.includes(id)) return;
+      cerrarLector();
+      idsCapas.forEach((otro) => document.getElementById(otro).classList.remove('activa'));
+      document.getElementById(id).classList.add('activa');
+      document.documentElement.style.overflow = 'hidden';
+    }
+
+    function cerrarCapas() {
+      idsCapas.forEach((id) => document.getElementById(id).classList.remove('activa'));
+      document.documentElement.style.overflow = '';
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach((enlace) => {
+      const id = enlace.getAttribute('href').slice(1);
+      if (!idsCapas.includes(id)) return;
+      enlace.addEventListener('click', (e) => {
+        e.preventDefault();
+        abrirCapa(id);
+      });
+    });
+
+    document.querySelectorAll('.capa-cerrar[data-cerrar]').forEach((boton) => {
+      boton.addEventListener('click', cerrarCapas);
+    });
+
+    // Escape cierra primero el lector (si hay una pieza abierta), y si no,
+    // cierra el ala completa — así se sale capa por capa, no todo de golpe.
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') cerrarLector();
+      if (e.key !== 'Escape') return;
+      if (document.getElementById('lector').classList.contains('activo')) {
+        cerrarLector();
+      } else {
+        cerrarCapas();
+      }
     });
 
     // Crea una fila de índice clicable (número, etiqueta opcional, fecha
