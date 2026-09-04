@@ -159,7 +159,7 @@
     margin-top: 3rem;
   }
 
-  /* Cada ala (Poemas, Ensayos, Al margen, Préstamos, Sobre esto) vive
+  /* Cada ala (Poemas, Ensayos, Al margen, En la red, Sobre esto) vive
      como su propia capa de pantalla completa, oculta hasta que se abre
      desde el menú. Dentro, un ensayo o poema abre otra capa encima
      (el .lector) — capas dentro de capas. */
@@ -175,12 +175,15 @@
   }
   .capa-seccion.activa { opacity: 1; visibility: visible; }
 
-  /* Entrar a cualquier capa (una sección, o una pieza en el lector) es
-     un mundo aparte: verde oscuro con rayas doradas de fondo, sin
-     depender de si el visitante está en modo claro u oscuro. Se
-     redefinen aquí los mismos tokens de color que ya usa el resto del
-     sitio, así todo lo de adentro (tarjetas, tags, texto) se adapta
-     solo, sin tocar ese CSS. */
+  /* Toda la biblioteca (el menú de entrada y cada capa que se abre
+     desde ahí) comparte el mismo mundo: verde oscuro con rayas finas
+     doradas, como una tela de gis, sin depender de si el visitante
+     está en modo claro u oscuro. Se redefinen aquí los mismos tokens
+     de color que ya usa el resto del sitio, así todo lo de adentro
+     (tarjetas, tags, texto) se adapta solo, sin tocar ese CSS. El
+     índice (main) usa su propio diseño de tarjetas por encima; las
+     capas usan listas — pero el fondo es el mismo lenguaje. */
+  main,
   .capa-seccion,
   .lector {
     --bg: #1b2314;
@@ -195,11 +198,11 @@
     --shadow: rgba(0, 0, 0, 0.4);
     background-color: var(--bg);
     background-image: repeating-linear-gradient(
-      115deg,
-      rgba(217, 168, 86, 0.12) 0px,
-      rgba(217, 168, 86, 0.12) 1.5px,
-      transparent 1.5px,
-      transparent 46px
+      90deg,
+      rgba(217, 168, 86, 0.16) 0px,
+      rgba(217, 168, 86, 0.16) 1px,
+      transparent 1px,
+      transparent 15px
     );
     color: var(--ink);
   }
@@ -700,13 +703,13 @@
   <header class="masthead">
     <div class="masthead-id">
       <div class="masthead-name">Serendipia</div>
-      <div class="masthead-tagline">Poemas · Ensayos · Al margen · Préstamos</div>
+      <div class="masthead-tagline">Poemas · Ensayos · Al margen · En la red</div>
     </div>
     <nav>
       <a href="#poemas">Poemas</a>
       <a href="#ensayos">Ensayos</a>
       <a href="#ahora">Al margen</a>
-      <a href="#prestamos">Préstamos</a>
+      <a href="#prestamos">En la red</a>
       <a href="#sobre">Sobre esto</a>
     </nav>
   </header>
@@ -736,7 +739,7 @@
       </a>
       <a href="#prestamos" class="catalogo-carta">
         <span class="catalogo-numero">L — 04</span>
-        <span class="catalogo-titulo">Préstamos</span>
+        <span class="catalogo-titulo">En la red</span>
         <span class="catalogo-desc">Cosas ajenas que vale la pena señalar</span>
       </a>
     </nav>
@@ -784,7 +787,7 @@
       <button type="button" class="capa-cerrar" data-cerrar aria-label="Cerrar">×</button>
       <div class="capa-interior">
         <div class="section-head">
-          <h2>Préstamos</h2>
+          <h2>En la red</h2>
           <div class="red-controles" id="red-controles">
             <button type="button" id="red-prev" class="red-flecha" aria-label="Ver anteriores">‹</button>
             <button type="button" id="red-next" class="red-flecha" aria-label="Ver siguientes">›</button>
@@ -802,7 +805,7 @@
           <h2>Sobre esta biblioteca</h2>
         </div>
         <p>Serendipia nació de la costumbre de anotar todo lo que se cruza: poemas, ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que escribo, leo y veo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
-        <p>Todo lo que aparece en "Préstamos" es de otras personas: cada tarjeta enlaza directo a la fuente original (la noticia, el TikTok, el video), con crédito a quien lo hizo. La idea es señalar cosas que valen la pena, no reproducirlas ni presentarlas como propias.</p>
+        <p>Todo lo que aparece en "En la red" es de otras personas: cada tarjeta enlaza directo a la fuente original (la noticia, el TikTok, el video), con crédito a quien lo hizo. La idea es señalar cosas que valen la pena, no reproducirlas ni presentarlas como propias.</p>
         <blockquote class="camus">
           <p>"En pleno invierno, aprendí al fin que había en mí un verano invencible."</p>
           <cite>— Albert Camus, <em>Regreso a Tipasa</em></cite>
@@ -837,7 +840,7 @@
     // verso por línea de texto).
     const poemas = [];
 
-    // "Préstamos": noticias y videos (incluye TikToks) que tú me pidas agregar.
+    // "En la red": noticias y videos (incluye TikToks) que tú me pidas agregar.
     // A diferencia de "Al margen" y los Ensayos, esta lista no se edita desde
     // el sitio — cada tarjeta la agrego yo a mano cuando me pasas un enlace,
     // para asegurarme de que el título, la fuente y la imagen sean reales.
@@ -1035,7 +1038,7 @@
 
     document.getElementById('lector-cerrar').addEventListener('click', cerrarLector);
 
-    // Cada ala (Poemas, Ensayos, Al margen, Préstamos, Sobre esto) es su
+    // Cada ala (Poemas, Ensayos, Al margen, En la red, Sobre esto) es su
     // propia capa de pantalla completa. Por defecto solo se ve el menú
     // (portada -> hero + catálogo); un clic en una ficha o del menú abre
     // esa ala encima de todo.
