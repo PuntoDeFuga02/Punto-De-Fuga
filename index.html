@@ -305,6 +305,25 @@
 
   .hero p { color: var(--ink-soft); font-size: 1.1rem; max-width: 56ch; }
 
+  .hero-cita { margin: 1.75rem 0 0; max-width: 46ch; }
+  .hero-cita p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .hero-cita cite {
+    display: block;
+    margin-top: 0.6rem;
+    font-style: normal;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    opacity: 0.75;
+  }
+
   .catalogo {
     margin-top: 3.5rem;
     display: grid;
@@ -699,9 +718,12 @@
 
   <main>
     <section class="hero">
-      <span class="kicker">Una biblioteca personal</span>
-      <h1>Un lugar para tropezar con lo que no sabías que buscabas.</h1>
-      <p>Serendipia es mi biblioteca: poemas, ensayos y notas que cruzan el derecho con la física, la inteligencia artificial y la vida diaria. Nada está ordenado para que lo encuentres fácil — está aquí para que te lo topes.</p>
+      <span class="kicker">Antes le escribía a una sola persona</span>
+      <h1>Ahora le escribo a la vida entera, para no dejarla pasar en silencio.</h1>
+      <blockquote class="hero-cita">
+        <p>"...your one wild and precious life."</p>
+        <cite>— Mary Oliver, <em>The Summer Day</em></cite>
+      </blockquote>
     </section>
 
     <nav class="catalogo" aria-label="Alas de la biblioteca">
