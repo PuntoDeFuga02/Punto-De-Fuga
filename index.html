@@ -10,33 +10,22 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
+  /* Serendipia tiene un solo look, fijo, no cambia con el modo claro/
+     oscuro del visitante: verde oscuro con rayas doradas finas, en
+     todo el sitio parejo (encabezado incluido), para que no haya
+     ninguna zona de otro color rompiendo la unidad. */
   :root {
-    color-scheme: light dark;
-    --bg: #f6f1e6;
-    --bg-raised: #eee6d3;
-    --ink: #201c15;
-    --ink-soft: #6e6656;
-    --rule: rgba(32, 28, 21, 0.14);
-    --amber: #96692a;
-    --rust: #8a4a34;
-    --moss: #4f6f54;
-    --verde-margen: #46592f;
-    --shadow: rgba(32, 28, 21, 0.08);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #14151a;
-      --bg-raised: #1b1d24;
-      --ink: #ede7d8;
-      --ink-soft: #a39d8c;
-      --rule: rgba(237, 231, 216, 0.14);
-      --amber: #d9a856;
-      --rust: #c0715a;
-      --moss: #8aab8f;
-      --verde-margen: #93ac72;
-      --shadow: rgba(0, 0, 0, 0.35);
-    }
+    color-scheme: dark;
+    --bg: #1b2314;
+    --bg-raised: #232d1b;
+    --ink: #f2ecd9;
+    --ink-soft: #bcb595;
+    --rule: rgba(242, 236, 217, 0.16);
+    --amber: #d9a856;
+    --rust: #c0715a;
+    --moss: #8aab8f;
+    --verde-margen: #a9c17e;
+    --shadow: rgba(0, 0, 0, 0.4);
   }
 
   * { box-sizing: border-box; }
@@ -175,27 +164,11 @@
   }
   .capa-seccion.activa { opacity: 1; visibility: visible; }
 
-  /* Toda la biblioteca (el menú de entrada y cada capa que se abre
-     desde ahí) comparte el mismo mundo: verde oscuro con rayas finas
-     doradas, como una tela de gis, sin depender de si el visitante
-     está en modo claro u oscuro. Se redefinen aquí los mismos tokens
-     de color que ya usa el resto del sitio, así todo lo de adentro
-     (tarjetas, tags, texto) se adapta solo, sin tocar ese CSS. El
-     índice (main) usa su propio diseño de tarjetas por encima; las
-     capas usan listas — pero el fondo es el mismo lenguaje. */
-  main,
+  /* .capa-seccion y .lector son overlays fijos (position: fixed), así
+     que necesitan pintar su propio fondo — no basta con heredarlo del
+     body aunque el color ya sea el mismo en todo el sitio. */
   .capa-seccion,
   .lector {
-    --bg: #1b2314;
-    --bg-raised: #232d1b;
-    --ink: #f2ecd9;
-    --ink-soft: #bcb595;
-    --rule: rgba(242, 236, 217, 0.16);
-    --amber: #d9a856;
-    --rust: #c0715a;
-    --moss: #8aab8f;
-    --verde-margen: #a9c17e;
-    --shadow: rgba(0, 0, 0, 0.4);
     background-color: var(--bg);
     background-image: repeating-linear-gradient(
       90deg,
@@ -217,7 +190,14 @@
 
   body {
     margin: 0;
-    background: var(--bg);
+    background-color: var(--bg);
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(217, 168, 86, 0.05) 0px,
+      rgba(217, 168, 86, 0.05) 1px,
+      transparent 1px,
+      transparent 15px
+    );
     color: var(--ink);
     font-family: 'Public Sans', sans-serif;
     line-height: 1.65;
