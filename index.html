@@ -99,7 +99,6 @@
     position: fixed;
     inset: 0;
     z-index: 500;
-    background: var(--bg);
     overflow-y: auto;
     opacity: 0;
     visibility: hidden;
@@ -168,7 +167,6 @@
     position: fixed;
     inset: 0;
     z-index: 400;
-    background: var(--bg);
     overflow-y: auto;
     opacity: 0;
     visibility: hidden;
@@ -176,6 +174,35 @@
     transition: opacity 0.3s ease, visibility 0.3s ease;
   }
   .capa-seccion.activa { opacity: 1; visibility: visible; }
+
+  /* Entrar a cualquier capa (una sección, o una pieza en el lector) es
+     un mundo aparte: verde oscuro con rayas doradas de fondo, sin
+     depender de si el visitante está en modo claro u oscuro. Se
+     redefinen aquí los mismos tokens de color que ya usa el resto del
+     sitio, así todo lo de adentro (tarjetas, tags, texto) se adapta
+     solo, sin tocar ese CSS. */
+  .capa-seccion,
+  .lector {
+    --bg: #1b2314;
+    --bg-raised: #232d1b;
+    --ink: #f2ecd9;
+    --ink-soft: #bcb595;
+    --rule: rgba(242, 236, 217, 0.16);
+    --amber: #d9a856;
+    --rust: #c0715a;
+    --moss: #8aab8f;
+    --verde-margen: #a9c17e;
+    --shadow: rgba(0, 0, 0, 0.4);
+    background-color: var(--bg);
+    background-image: repeating-linear-gradient(
+      115deg,
+      rgba(217, 168, 86, 0.12) 0px,
+      rgba(217, 168, 86, 0.12) 1.5px,
+      transparent 1.5px,
+      transparent 46px
+    );
+    color: var(--ink);
+  }
 
   .capa-interior {
     max-width: 680px;
