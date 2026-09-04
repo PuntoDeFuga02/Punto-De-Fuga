@@ -94,6 +94,72 @@
     letter-spacing: 0.14em;
     color: rgba(242, 236, 217, 0.55);
   }
+
+  .lector {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: var(--bg);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .lector.activo { opacity: 1; visibility: visible; }
+
+  .lector-cerrar {
+    position: fixed;
+    top: 1.25rem;
+    right: clamp(1.25rem, 5vw, 3rem);
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 1;
+    transition: all 0.2s ease;
+  }
+  .lector-cerrar:hover { border-color: var(--amber); color: var(--amber); }
+  .lector-cerrar:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  .lector-contenido {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: clamp(4rem, 10vw, 6rem) clamp(1.5rem, 6vw, 2rem) 6rem;
+  }
+  .lector-contenido h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    line-height: 1.3;
+    margin: 0 0 2rem;
+  }
+  .lector-contenido p {
+    max-width: 62ch;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .lector-contenido p + p { margin-top: 1.1em; }
+  .lector-contenido .lector-verso {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.9;
+    color: var(--ink);
+    white-space: pre-line;
+    max-width: 46ch;
+  }
+  .lector-contenido .entry-comentarios {
+    margin-left: 0;
+    margin-top: 3rem;
+  }
+
   html { scroll-behavior: smooth; }
 
   body {
@@ -332,16 +398,20 @@
   .filtro-chip.activo { background: var(--amber); border-color: var(--amber); color: var(--bg); font-weight: 600; }
   .filtro-chip:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 
-  .entry {
+  .entry-fila {
     border-top: 1px solid var(--rule);
-    padding: 2rem 0 2.5rem 1rem;
+    padding: 1.35rem 0 1.35rem 1rem;
     margin-left: -1rem;
     border-left: 2px solid transparent;
-    transition: border-left-color 0.25s ease, background 0.25s ease;
+    cursor: pointer;
+    transition: border-left-color 0.2s ease, background 0.2s ease;
   }
-  .entry:last-child { padding-bottom: 0.5rem; }
-  .entry:hover { border-left-color: var(--amber); }
-  .entry:hover h3 { color: var(--amber); }
+  .entry-fila:hover, .entry-fila:focus-visible {
+    border-left-color: var(--amber);
+    background: var(--bg-raised);
+    outline: none;
+  }
+  .entry-fila:hover h3, .entry-fila:focus-visible h3 { color: var(--amber); }
 
   .entry-meta {
     display: flex;
@@ -369,17 +439,14 @@
 
   .entry-meta .fecha { color: var(--ink-soft); }
 
-  .entry h3 {
+  .entry-fila h3 {
     font-family: 'Fraunces', serif;
     font-weight: 500;
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     line-height: 1.35;
-    margin: 0 0 0.6rem;
-    transition: color 0.25s ease;
+    margin: 0;
+    transition: color 0.2s ease;
   }
-
-  .entry p { margin: 0; max-width: 60ch; color: var(--ink-soft); font-size: 1.02rem; }
-  .entry p + p { margin-top: 0.9em; }
 
   .entry-comentarios {
     margin: 1.5rem 0 3rem 1rem;
@@ -520,30 +587,6 @@
 
   .red-vacio { color: var(--ink-soft); font-size: 0.98rem; }
 
-  .poema {
-    padding: 1rem 0 2rem;
-  }
-  .poema:not(:first-child) {
-    margin-top: 1rem;
-    padding-top: 3rem;
-    border-top: 1px solid var(--rule);
-  }
-  .poema h3 {
-    font-family: 'Fraunces', serif;
-    font-weight: 500;
-    font-size: 1.3rem;
-    margin: 0 0 1.5rem;
-  }
-  .poema p {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 1.15rem;
-    line-height: 1.9;
-    color: var(--ink);
-    white-space: pre-line;
-    max-width: 46ch;
-  }
-
   .about p { max-width: 60ch; color: var(--ink-soft); font-size: 1.05rem; }
 
   .camus {
@@ -596,6 +639,11 @@
       <cite>— Albert Camus</cite>
     </blockquote>
     <span class="portada-entrar">Toca para entrar</span>
+  </div>
+
+  <div class="lector" id="lector">
+    <button type="button" class="lector-cerrar" id="lector-cerrar" aria-label="Cerrar">×</button>
+    <div class="lector-contenido" id="lector-contenido"></div>
   </div>
 
   <div class="progress-bar" id="progress-bar"></div>
@@ -887,9 +935,87 @@
         .replace(/(^-|-$)/g, '');
     }
 
-    // Poemas: cada uno respeta sus saltos de línea tal cual, y también
-    // tiene su propio hilo de comentarios (usa el título como identificador,
-    // igual que los ensayos).
+    // El lector es una pantalla completa que se abre al hacer clic en un
+    // título (de un poema o un ensayo): ahí se ve el texto entero y su
+    // hilo de comentarios. Así, las listas de arriba se quedan como un
+    // índice — solo títulos — y el contenido se descubre de a uno.
+    function abrirLector(titulo, parrafos, term, esVerso) {
+      const cont = document.getElementById('lector-contenido');
+      cont.innerHTML = '';
+
+      const h2 = document.createElement('h2');
+      h2.textContent = titulo;
+      cont.appendChild(h2);
+
+      parrafos.forEach((texto) => {
+        const p = document.createElement('p');
+        p.textContent = texto;
+        if (esVerso) p.className = 'lector-verso';
+        cont.appendChild(p);
+      });
+
+      const comentarios = document.createElement('div');
+      comentarios.className = 'entry-comentarios';
+      cont.appendChild(comentarios);
+      poblarComentarios(comentarios, term);
+
+      document.getElementById('lector').classList.add('activo');
+      document.documentElement.style.overflow = 'hidden';
+    }
+
+    function cerrarLector() {
+      document.getElementById('lector').classList.remove('activo');
+      document.documentElement.style.overflow = '';
+    }
+
+    document.getElementById('lector-cerrar').addEventListener('click', cerrarLector);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') cerrarLector();
+    });
+
+    // Crea una fila de índice clicable (número, etiqueta opcional, fecha
+    // opcional y título) que abre el lector con ese contenido.
+    function crearFilaIndice({ numero, etiqueta, fecha, titulo, parrafos, term, esVerso }) {
+      const fila = document.createElement('div');
+      fila.className = 'entry-fila';
+      fila.tabIndex = 0;
+      fila.setAttribute('role', 'button');
+
+      const meta = document.createElement('div');
+      meta.className = 'entry-meta';
+      if (numero) {
+        const num = document.createElement('span');
+        num.className = 'entry-num';
+        num.textContent = numero;
+        meta.appendChild(num);
+      }
+      if (etiqueta) {
+        const tag = document.createElement('span');
+        tag.className = `tag ${etiqueta.categoria}`;
+        tag.textContent = etiqueta.texto;
+        meta.appendChild(tag);
+      }
+      if (fecha) {
+        const f = document.createElement('span');
+        f.className = 'fecha';
+        f.textContent = fecha;
+        meta.appendChild(f);
+      }
+
+      const h3 = document.createElement('h3');
+      h3.textContent = titulo;
+
+      fila.append(meta, h3);
+      const abrir = () => abrirLector(titulo, parrafos, term, esVerso);
+      fila.addEventListener('click', abrir);
+      fila.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); }
+      });
+      return fila;
+    }
+
+    // Poemas: la lista muestra solo títulos; el texto completo (con sus
+    // saltos de línea tal cual) se lee en el lector de pantalla completa.
     function renderPoemas() {
       const cont = document.getElementById('poemas-lista');
       cont.innerHTML = '';
@@ -903,28 +1029,19 @@
       }
 
       poemas.forEach((item) => {
-        const bloque = document.createElement('div');
-        bloque.className = 'poema';
-
-        const h3 = document.createElement('h3');
-        h3.textContent = item.titulo;
-
-        const verso = document.createElement('p');
-        verso.textContent = item.texto;
-
-        bloque.append(h3, verso);
-        cont.appendChild(bloque);
-
-        const comentarios = document.createElement('div');
-        comentarios.className = 'entry-comentarios';
-        cont.appendChild(comentarios);
-        poblarComentarios(comentarios, slugificar(item.titulo));
+        cont.appendChild(crearFilaIndice({
+          titulo: item.titulo,
+          parrafos: [item.texto],
+          term: slugificar(item.titulo),
+          esVerso: true
+        }));
       });
     }
 
     // Ensayos: son entradas curadas, no se agregan ni se borran desde el
-    // sitio. Cada una trae su propio hilo de comentarios (Giscus), separado
-    // del de las demás.
+    // sitio. La lista solo muestra el índice (número, categoría, fecha y
+    // título); el texto completo se lee en el lector de pantalla completa,
+    // donde también vive el hilo de comentarios de cada uno.
     function renderBitacora() {
       const cont = document.getElementById('bitacora-lista');
       cont.innerHTML = '';
@@ -934,47 +1051,14 @@
 
       visibles.forEach((item) => {
         const i = entradas.indexOf(item);
-        const entry = document.createElement('div');
-        entry.className = 'entry';
-
-        const meta = document.createElement('div');
-        meta.className = 'entry-meta';
-
-        const num = document.createElement('span');
-        num.className = 'entry-num';
-        num.textContent = 'N.º ' + String(i + 1).padStart(2, '0');
-
-        const tag = document.createElement('span');
-        tag.className = `tag ${item.categoria}`;
-        tag.textContent = item.etiqueta;
-
-        const fecha = document.createElement('span');
-        fecha.className = 'fecha';
-        fecha.textContent = item.fecha;
-
-        meta.append(num, tag, fecha);
-
-        const h3 = document.createElement('h3');
-        h3.textContent = item.titulo;
-
-        // Las entradas mas largas pueden traer varios parrafos separados
-        // por una linea en blanco (\n\n) en el texto original.
-        item.texto.split(/\n\s*\n/).forEach((parrafo) => {
-          const p = document.createElement('p');
-          p.textContent = parrafo.trim();
-          entry.appendChild(p);
-        });
-
-        entry.prepend(h3);
-        entry.prepend(meta);
-        cont.appendChild(entry);
-
-        // Un hilo de comentarios propio para esta entrada (no compartido
-        // con las demás), usando el título como identificador.
-        const comentarios = document.createElement('div');
-        comentarios.className = 'entry-comentarios';
-        cont.appendChild(comentarios);
-        poblarComentarios(comentarios, slugificar(item.titulo));
+        cont.appendChild(crearFilaIndice({
+          numero: 'N.º ' + String(i + 1).padStart(2, '0'),
+          etiqueta: { categoria: item.categoria, texto: item.etiqueta },
+          fecha: item.fecha,
+          titulo: item.titulo,
+          parrafos: item.texto.split(/\n\s*\n/).map((p) => p.trim()),
+          term: slugificar(item.titulo)
+        }));
       });
 
       if (visibles.length === 0) {
