@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Punto de Fuga — Bitácora</title>
-<meta name="description" content="Un cuaderno personal donde el derecho conversa con la física, la inteligencia artificial y las preguntas de todos los días." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2314151a'/%3E%3Cg stroke='%23d9a856' stroke-width='4' fill='none'%3E%3Cline x1='50' y1='50' x2='4' y2='12'/%3E%3Cline x1='50' y1='50' x2='96' y2='12'/%3E%3Cline x1='50' y1='50' x2='4' y2='88'/%3E%3Cline x1='50' y1='50' x2='96' y2='88'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='5' fill='%23d9a856'/%3E%3C/svg%3E" />
+<title>Serendipia — Biblioteca personal</title>
+<meta name="description" content="Serendipia: una biblioteca personal de poemas, ensayos y notas al margen, donde el derecho conversa con la física, la inteligencia artificial y la vida diaria." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2314151a'/%3E%3Cg stroke='%23d9a856' stroke-width='4' stroke-linejoin='round' fill='none'%3E%3Cpath d='M50 26 C 38 18, 20 18, 12 24 L12 76 C20 70, 38 70, 50 78 C62 70, 80 70, 88 76 L88 24 C80 18, 62 18, 50 26 Z'/%3E%3Cline x1='50' y1='26' x2='50' y2='78'/%3E%3C/g%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -151,6 +151,51 @@
   }
 
   .hero p { color: var(--ink-soft); font-size: 1.1rem; max-width: 56ch; }
+
+  .catalogo {
+    margin-top: 3.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+
+  .catalogo-carta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: var(--bg-raised);
+    padding: 1.4rem 1.3rem 1.6rem;
+    border: none;
+    border-top: 3px solid var(--amber);
+    position: relative;
+    transition: background 0.2s ease;
+  }
+  .catalogo-carta:hover { background: var(--bg); }
+  .catalogo-carta:focus-visible { outline: 2px solid var(--amber); outline-offset: -2px; }
+
+  .catalogo-numero {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .catalogo-titulo {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: var(--ink);
+  }
+
+  .catalogo-desc {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
 
   section { margin-top: 6rem; }
 
@@ -421,6 +466,30 @@
 
   .red-vacio { color: var(--ink-soft); font-size: 0.98rem; }
 
+  .poema {
+    padding: 1rem 0 2rem;
+  }
+  .poema:not(:first-child) {
+    margin-top: 1rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--rule);
+  }
+  .poema h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin: 0 0 1.5rem;
+  }
+  .poema p {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: var(--ink);
+    white-space: pre-line;
+    max-width: 46ch;
+  }
+
   .about p { max-width: 60ch; color: var(--ink-soft); font-size: 1.05rem; }
 
   .camus {
@@ -469,22 +538,65 @@
   <div class="progress-bar" id="progress-bar"></div>
   <header class="masthead">
     <div class="masthead-id">
-      <div class="masthead-name">Punto de Fuga</div>
-      <div class="masthead-tagline">Derecho · IA · Física · Vida</div>
+      <div class="masthead-name">Serendipia</div>
+      <div class="masthead-tagline">Poemas · Ensayos · Al margen · Préstamos</div>
     </div>
     <nav>
-      <a href="#ahora">Ahora</a>
-      <a href="#bitacora">Bitácora</a>
-      <a href="#en-la-red">En la red</a>
+      <a href="#poemas">Poemas</a>
+      <a href="#ensayos">Ensayos</a>
+      <a href="#ahora">Al margen</a>
+      <a href="#prestamos">Préstamos</a>
       <a href="#sobre">Sobre esto</a>
     </nav>
   </header>
 
   <main>
     <section class="hero">
-      <span class="kicker">Un cuaderno personal</span>
-      <h1>Un cuaderno donde el derecho conversa con la física, la IA y las preguntas que no dejan dormir.</h1>
-      <p>Este es un espacio en construcción: notas de lo que leo y veo, y un lugar para pensar en voz alta sobre inteligencia artificial, física y las ideas que ayudan a cambiar de perspectiva. Empieza sencillo; va a crecer con el tiempo.</p>
+      <span class="kicker">Una biblioteca personal</span>
+      <h1>Un lugar para tropezar con lo que no sabías que buscabas.</h1>
+      <p>Serendipia es mi biblioteca: poemas, ensayos y notas que cruzan el derecho con la física, la inteligencia artificial y la vida diaria. Nada está ordenado para que lo encuentres fácil — está aquí para que te lo topes.</p>
+    </section>
+
+    <nav class="catalogo" aria-label="Alas de la biblioteca">
+      <a href="#poemas" class="catalogo-carta">
+        <span class="catalogo-numero">P — 01</span>
+        <span class="catalogo-titulo">Poemas</span>
+        <span class="catalogo-desc">Verso, cuando las ideas ya no caben en prosa</span>
+      </a>
+      <a href="#ensayos" class="catalogo-carta">
+        <span class="catalogo-numero">E — 02</span>
+        <span class="catalogo-titulo">Ensayos</span>
+        <span class="catalogo-desc">Ideas trabajadas, con fuentes, hasta el final</span>
+      </a>
+      <a href="#ahora" class="catalogo-carta">
+        <span class="catalogo-numero">M — 03</span>
+        <span class="catalogo-titulo">Al margen</span>
+        <span class="catalogo-desc">Lo que leo, veo y pienso ahora mismo</span>
+      </a>
+      <a href="#prestamos" class="catalogo-carta">
+        <span class="catalogo-numero">L — 04</span>
+        <span class="catalogo-titulo">Préstamos</span>
+        <span class="catalogo-desc">Cosas ajenas que vale la pena señalar</span>
+      </a>
+    </nav>
+
+    <section id="poemas">
+      <div class="section-head">
+        <h2>Poemas</h2>
+        <span>verso, sin curar de más</span>
+      </div>
+      <div id="poemas-lista"></div>
+    </section>
+
+    <section id="ensayos">
+      <div class="section-head">
+        <h2>Ensayos</h2>
+        <span>lo que voy pensando y escribiendo, con espacio para comentar cada uno</span>
+      </div>
+
+      <div class="filtro-categorias" id="filtro-categorias"></div>
+
+      <div id="bitacora-lista"></div>
     </section>
 
     <section id="ahora">
@@ -498,20 +610,9 @@
       <div class="entry-comentarios" id="ahora-comentarios"></div>
     </section>
 
-    <section id="bitacora">
+    <section id="prestamos">
       <div class="section-head">
-        <h2>Bitácora</h2>
-        <span>lo que voy pensando y escribiendo, con espacio para comentar cada una</span>
-      </div>
-
-      <div class="filtro-categorias" id="filtro-categorias"></div>
-
-      <div id="bitacora-lista"></div>
-    </section>
-
-    <section id="en-la-red">
-      <div class="section-head">
-        <h2>En la red</h2>
+        <h2>Préstamos</h2>
         <div class="red-controles" id="red-controles">
           <button type="button" id="red-prev" class="red-flecha" aria-label="Ver anteriores">‹</button>
           <button type="button" id="red-next" class="red-flecha" aria-label="Ver siguientes">›</button>
@@ -523,10 +624,10 @@
 
     <section id="sobre" class="about">
       <div class="section-head">
-        <h2>Sobre esto</h2>
+        <h2>Sobre esta biblioteca</h2>
       </div>
-      <p>Este sitio nació de la costumbre de anotar todo lo que se cruza: ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que voy leyendo y viendo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
-      <p>Todo lo que aparece en "En la red" es de otras personas: cada tarjeta enlaza directo a la fuente original (la noticia, el TikTok, el video), con crédito a quien lo hizo. La idea es señalar cosas que valen la pena, no reproducirlas ni presentarlas como propias.</p>
+      <p>Serendipia nació de la costumbre de anotar todo lo que se cruza: poemas, ideas de inteligencia artificial, física, derecho y la vida en general. Es un lugar para guardar lo que escribo, leo y veo, y pensar en voz alta. Va a crecer poco a poco — esta primera versión es apenas el comienzo.</p>
+      <p>Todo lo que aparece en "Préstamos" es de otras personas: cada tarjeta enlaza directo a la fuente original (la noticia, el TikTok, el video), con crédito a quien lo hizo. La idea es señalar cosas que valen la pena, no reproducirlas ni presentarlas como propias.</p>
       <blockquote class="camus">
         <p>"En pleno invierno, aprendí al fin que había en mí un verano invencible."</p>
         <cite>— Albert Camus, <em>Regreso a Tipasa</em></cite>
@@ -543,7 +644,7 @@
     // Aquí vive todo el contenido que cambia. Para agregar o editar algo,
     // solo tocas esta parte — el HTML de arriba no necesita cambios.
     const perfil = {
-      nombre: "Punto de Fuga", // este campo ahora es el nombre del sitio, no un dato personal
+      nombre: "Serendipia", // este campo ahora es el nombre del sitio, no un dato personal
       ahoraMismo: [
         { tipo: "Leyendo", texto: "La insoportable levedad del ser, de Milan Kundera" },
         { tipo: "Viendo", texto: "\"La teoría del caos\" en Veritasium — el video de la ecuación que te cambia el modo de ver el mundo" },
@@ -555,8 +656,13 @@
       { fecha: "01 sep 2026", categoria: "vida", etiqueta: "Vida", titulo: "El mito de \"les voy a demostrar que se equivocaron\"", texto: "Hay una frase que se repite tanto que ya nadie la cuestiona: que el desprecio y la duda ajena son el mejor combustible, que no hay nada como que alguien te diga \"no vas a poder\" para sacar fuerzas de donde no sabías que tenías. Y hay algo de cierto ahí — la evidencia psicológica es clara en que lo negativo pesa más que lo positivo: nos afecta más una crítica que diez elogios, un mal recuerdo que diez buenos (Baumeister et al., 2001). Pero esa asimetría no significa lo que la frase motivacional quiere que signifique.\n\nCuando se mide qué le hace realmente la crítica al desempeño de alguien, el panorama es mucho menos heroico. Un metaanálisis con más de 600 estudios y 23 mil observaciones encontró que la retroalimentación mejora el rendimiento en promedio, sí — pero en más de un tercio de los casos, simplemente lo empeora (Kluger y DeNisi, 1996). La duda ajena no es un motor confiable. La mayoría de las veces, solo pesa.\n\nEntonces, ¿por qué a veces sí funciona eso de \"les voy a demostrar que se equivocaron\"? Aquí está lo que de verdad me pareció valioso encontrar: un estudio de 2020 muestra que el llamado \"efecto underdog\" — que las bajas expectativas de otros terminen aumentando tu desempeño — depende casi por completo de una sola variable: qué tan creíble te parece quien duda de ti. Si la persona que te subestima no te parece una autoridad legítima, su duda te enoja lo suficiente como para esforzarte más. Pero si sí la consideras creíble — un profesor, alguien que de verdad sabe del tema — pasa exactamente lo contrario: te hunde (Nurmohamed, 2020). Es el mismo mecanismo psicológico produciendo resultados opuestos, dependiendo de un solo juicio que haces tú, casi sin darte cuenta: ¿esta persona tiene autoridad real sobre lo que yo puedo lograr, o no?\n\nCon esto, la frase motivacional queda casi al revés de como la contamos siempre. No es que lo negativo motive por sí solo — la mayoría de las veces hace justo lo contrario. Lo que de verdad decide si una duda te hunde o te impulsa no es la duda en sí, sino la decisión, consciente o no, de si esa persona se ha ganado el derecho de definir lo que tú eres capaz de lograr. Esa es, creo, la pregunta que vale la pena hacerse la próxima vez que alguien dude de ti: no \"¿me voy a dejar hundir?\", sino \"¿esta persona en verdad tiene autoridad sobre esto?\"." }
     ];
 
-    // "En la red": noticias y videos (incluye TikToks) que tú me pidas agregar.
-    // A diferencia de "Ahora mismo" y la Bitácora, esta lista no se edita desde
+    // Poemas: vacío por ahora. Cada poema es { titulo, texto } — el texto
+    // respeta los saltos de línea tal cual los escribas (una línea de
+    // verso por línea de texto).
+    const poemas = [];
+
+    // "Préstamos": noticias y videos (incluye TikToks) que tú me pidas agregar.
+    // A diferencia de "Al margen" y los Ensayos, esta lista no se edita desde
     // el sitio — cada tarjeta la agrego yo a mano cuando me pasas un enlace,
     // para asegurarme de que el título, la fuente y la imagen sean reales.
     // Nota sobre imágenes: las miniaturas de TikTok no se pueden mostrar
@@ -606,7 +712,7 @@
       // Para agregar otra: pásame el enlace y yo armo el objeto con los datos reales.
     ];
 
-    document.title = perfil.nombre + " — Bitácora";
+    document.title = perfil.nombre + " — Biblioteca personal";
     document.querySelector('.masthead-name').textContent = perfil.nombre;
 
     // Los comentarios de Giscus se cargan solo cuando alguien hace clic
@@ -718,7 +824,42 @@
         .replace(/(^-|-$)/g, '');
     }
 
-    // Bitácora: son entradas curadas, no se agregan ni se borran desde el
+    // Poemas: cada uno respeta sus saltos de línea tal cual, y también
+    // tiene su propio hilo de comentarios (usa el título como identificador,
+    // igual que los ensayos).
+    function renderPoemas() {
+      const cont = document.getElementById('poemas-lista');
+      cont.innerHTML = '';
+
+      if (poemas.length === 0) {
+        const vacio = document.createElement('p');
+        vacio.className = 'red-vacio';
+        vacio.textContent = 'Todavía no hay nada aquí. En cuanto escriba uno, aparece.';
+        cont.appendChild(vacio);
+        return;
+      }
+
+      poemas.forEach((item) => {
+        const bloque = document.createElement('div');
+        bloque.className = 'poema';
+
+        const h3 = document.createElement('h3');
+        h3.textContent = item.titulo;
+
+        const verso = document.createElement('p');
+        verso.textContent = item.texto;
+
+        bloque.append(h3, verso);
+        cont.appendChild(bloque);
+
+        const comentarios = document.createElement('div');
+        comentarios.className = 'entry-comentarios';
+        cont.appendChild(comentarios);
+        poblarComentarios(comentarios, slugificar(item.titulo));
+      });
+    }
+
+    // Ensayos: son entradas curadas, no se agregan ni se borran desde el
     // sitio. Cada una trae su propio hilo de comentarios (Giscus), separado
     // del de las demás.
     function renderBitacora() {
@@ -880,6 +1021,7 @@
     });
 
     renderAhora();
+    renderPoemas();
     renderFiltros();
     renderBitacora();
     renderRed();
